@@ -20,7 +20,7 @@ var OZA = {
     usingExploreYourArea: true,
     currentLatLongRadius: '',
     recordSent: false,
-    useLifeFormExplorer: true,
+    exploreYourAreaBrowser: 0,  //0=simple, 1=advanced, 2=taxonomy
     noOfImagesToShow: 1,
     showImagesInSearch: false,
     useLargerImages: false,
@@ -65,40 +65,49 @@ function initialiseFromConfig() {
     console.log("isNative: " + OZA.isNative);
     if (!OZA.isNative) {
         //disable saved list functionality - only available in native apps.
-        $('#saveCurrentList').css({
-            'display': 'none'
-        });
-        $('#savedListHomePage').css({
-            'display': 'none'
-        });
-        $('#savedListConfig').css({
-            'display': 'none'
-        });
+        $('#saveCurrentList').css({'display': 'none'});
+        $('#savedListHomePage').css({'display': 'none'});
+        $('#savedListConfig').css({'display': 'none'});
     }
 
     document.getElementById('photofs').addEventListener('change', handleImageSelect, false);
 
     //get the explore stored preference              
-    $('input:radio[name=radio-group-browser-selector]')[0].checked = true;
-    var useLifeformForExplore = localStorage.getItem('ala-useLifeFormExplorer');
-    console.log('Stored preference for useLifeformForExplore: ' + useLifeformForExplore);
+    $('input:radio[name=radio-group-browser-selector]')[1].checked = true;
+    $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
+    $('input:radio[name=radio-group-browser-selector]')[2].checked = true;      
+    
+    var storedExploreYourAreaBrowser = localStorage.getItem('ala-exploreYourAreaBrowser');
+    console.log('Stored preference for exploreYourAreaBrowser: ' + storedExploreYourAreaBrowser);
 
-    if (useLifeformForExplore == null || useLifeformForExplore == 'useLifeForm') {
+    if (storedExploreYourAreaBrowser == 1) {
         console.log('Setting radio button to group');
-        $('input:radio[name=radio-group-browser-selector]')[0].checked = true;
-        OZA.useLifeFormExplorer = true;
-    } else {
-        console.log('Setting radio button to taxonomy');
-        $('input:radio[name=radio-group-browser-selector]')[1].checked = true;
         $('input:radio[name=radio-group-browser-selector]')[0].checked = false;
-        OZA.useLifeFormExplorer = false;
+        $('input:radio[name=radio-group-browser-selector]')[1].checked = true;
+        $('input:radio[name=radio-group-browser-selector]')[2].checked = false;                
+        OZA.exploreYourAreaBrowser = storedExploreYourAreaBrowser;
+    } else if(storedExploreYourAreaBrowser == 2) {
+        console.log('Setting radio button to taxonomy');
+        $('input:radio[name=radio-group-browser-selector]')[0].checked = false;        
+        $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
+        $('input:radio[name=radio-group-browser-selector]')[2].checked = true;        
+        OZA.exploreYourAreaBrowser = storedExploreYourAreaBrowser;
+    } else {
+    	//default to simple
+        $('input:radio[name=radio-group-browser-selector]')[0].checked = true;
+        $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
+        $('input:radio[name=radio-group-browser-selector]')[2].checked = false;        
+        OZA.exploreYourAreaBrowser = 0;        
     }
 
-    $('#radio-group-browser').bind('click', function () {
-        setUseLifeformForExplore(true);
+    $('#radio-simple-browser').bind('click', function () {
+        setExploreAreaBrowser(0);
     });
+    $('#radio-advanced-browser').bind('click', function () {
+        setExploreAreaBrowser(1);
+    });    
     $('#radio-taxonomy-browser').bind('click', function () {
-        setUseLifeformForExplore(false);
+        setExploreAreaBrowser(2);
     });
 
     //get the show images stored preference                                            
@@ -134,19 +143,14 @@ function initialiseFromConfig() {
     });
     $('#numberOfImagesToShow').bind('change', function (e, data) {
         OZA.noOfImagesToShow = $('#numberOfImagesToShow').val();
-        localStorage.setItem('ala-numberOfImagesToShow', noOfImagesToShow);
+        localStorage.setItem('ala-numberOfImagesToShow', OZA.noOfImagesToShow);
     });
 }
 
-function setUseLifeformForExplore(useLF) {
-    console.log('Setting useLifeForm to ' + useLF);
-    if (useLF) {
-        OZA.useLifeFormExplorer = true;
-        localStorage.setItem('ala-useLifeFormExplorer', 'useLifeForm');
-    } else {
-        OZA.useLifeFormExplorer = false;
-        localStorage.setItem('ala-useLifeFormExplorer', 'useTaxonomy');
-    }
+function setExploreAreaBrowser(option) {
+    console.log('Setting ala-exploreYourAreaBrowser to ' + option);
+    OZA.exploreYourAreaBrowser = option;
+    localStorage.setItem('ala-exploreYourAreaBrowser', option);
 }
 
 function setImagesInSearch(showImages) {
@@ -657,6 +661,83 @@ function resetExploreByTaxonomy() {
     OZA.currentRank = '';
     OZA.currentTaxonName = '';
     OZA.currentClassification = new Object();
+}
+
+function exploreByMultiGroups() {
+
+    console.log("Loading group: " + commonName);
+
+    showPageLoadingMsg('Loading groups for location...');
+
+    var searchUrl = M_URL + '/searchByMultiRanks?lat=' + OZA.currentLatitude + '&lon=' + OZA.currentLongitude + '&radius=' + getCurrentRadius();
+    
+    $('#exploreByMultiGroupsList').empty();
+    
+    $.getJSON(searchUrl, function (data) {
+    
+    	for(var i=0; i<data.length; i++){
+    		$('#exploreByMultiGroupsList').append('<li data-role="list-divider">' + data[i].groupName + '</li>');
+    		for(var j=0; j<data[i].groups.length; j++){
+    			$('#exploreByMultiGroupsList').append('<li><a href="javascript:exploreMultiGroup(\''+data[i].facetName+'\',\''+data[i].groups[j].scientificName+'\',\''+data[i].groups[j].commonName+'\');"><img src="multigroupImages/'+data[i].groups[j].scientificName.toLowerCase()+'.jpg"/>'+data[i].groups[j].commonName+'</a></li>');
+    		}
+    	}
+		$('#exploreByMultiGroupsList').listview('refresh');
+
+        hidePageLoadingMsg();
+    }).error(function () {
+        hidePageLoadingMsg();
+        alert('There was a problem loading the multigroups. Please try again.');
+    });    
+}
+
+function exploreMultiGroup(facetName, speciesGroup, commonName) {
+
+    console.log("Loading group: " + commonName);
+
+    showPageLoadingMsg('Loading group ' + speciesGroup + '...');
+
+    $('#exploreList').empty();
+    $('#exploreMultiGroupTitle').html(commonName);
+    $.mobile.changePage('#exploreMultiGroup');
+
+    var searchUrl = 'http://biocache.ala.org.au/ws/occurrences/search?lat=' + OZA.currentLatitude + '&lon=' + OZA.currentLongitude + '&radius=' + 	getCurrentRadius() + '&facets=names_and_lsid&q=' + facetName + ":" + speciesGroup + '&pageSize=0&start=0';
+
+	//alert(searchUrl);
+
+    $.getJSON(searchUrl, function (data) {
+
+        $('#exploreMultiGroupList').empty();
+
+        for (var i = 0; i < data.facetResults[0].fieldResult.length; i++) {
+
+                var parts = data.facetResults[0].fieldResult[i].label.split('|');
+                var html = '<a href="javascript:openSpeciesPage(\'' + parts[1] + '\')">';
+                if (OZA.showImagesInSearch) {
+                    html = html + '<img src="' + M_URL + '/species/image/thumbnail/' + parts[1] + '"/>';
+                }
+
+                if (parts[2] == '') {
+                    html = html + '<h4 class="searchResultHdr"><i>' + parts[0] + '</i></h4>';
+                } else {
+                    html = html + '<h4 class="searchResultHdr">' + parts[2] + '</h4>';
+                    html = html + '<p><strong><i>' + parts[0] + '</strong></i>';
+                }
+
+                html = html + '<p class="occurrenceCount">Recorded occurrences: ' + data.facetResults[0].fieldResult[i].count + '</p>';
+                html = html + '</a>';
+
+                $('#exploreMultiGroupList').append('<li>' + html + '</li>')
+        }
+
+
+        $('#exploreMultiGroupList').listview('refresh');
+        $.mobile.changePage('#exploreMultiGroup');
+
+        hidePageLoadingMsg();
+    }).error(function () {
+        hidePageLoadingMsg();
+        alert('There was a problem loading the taxonomic tree. Please try again.');
+    });
 }
 
 
@@ -1244,7 +1325,9 @@ function setLocality(latitude, longitude) {
 
     $.getJSON(M_URL + '/geocode?latlng=' + latitude + ',' + longitude, function (data) {
         //alert(data.results[0].formatted_address);
-        $('#locality').val(data.results[0].formatted_address);
+        if(data.results.length >0 && data.results[0].formatted_address !== undefined){
+	        $('#locality').val(data.results[0].formatted_address);
+	    }
     });
 }
 
@@ -1556,11 +1639,14 @@ function authenticateOrSend() {
 
 function openLocationForExplore() {
     OZA.usingExploreYourArea = true;
-    if (OZA.useLifeFormExplorer) {
+    
+    if (OZA.exploreYourAreaBrowser == 0) {
         $('#nextActionFromLocation').attr('href', '#exploreYourArea');
-    } else {
+    } else if (OZA.exploreYourAreaBrowser == 1) {
         //reset taxonomy browser
-        $('#nextActionFromLocation').attr('href', 'javascript:startExploreByTaxonomy();');
+       $('#nextActionFromLocation').attr('href', '#exploreByMultiGroups');
+    } else {
+        $('#nextActionFromLocation').attr('href', 'javascript:startExploreByTaxonomy();');    
     }
 
     if (OZA.map != null) {

@@ -118,7 +118,10 @@
             $('#exploreByTaxonomy').live('pagebeforeshow', function(e, data){
                 exploreByTaxonomy();                                                                
             });  
-
+            
+            $('#exploreByMultiGroups').live('pagebeforeshow', function(e, data){
+                exploreByMultiGroups();                                                                
+            });              
 
             //cleanup
 			$('#exploreYourArea' ).live( 'pagehide',function(event, ui){ hidePageLoadingMsg(); });            
@@ -220,7 +223,28 @@
 
                 </ul>
 			</div><!-- /content -->
-		</div><!-- /exploreGroup -->        
+		</div><!-- /exploreGroup -->     
+		
+		<div data-role="page" id="exploreByMultiGroups" data-theme="b" data-add-back-btn="true">
+			<div data-role="header"  data-theme="b">
+				<h1>Explore your area</h1>
+				<a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+			</div><!-- /header -->
+			<div data-role="content">
+				<ul id="exploreByMultiGroupsList" data-role="listview"></ul>
+			</div><!-- /content -->
+		</div><!-- /exploreGroup -->    
+		
+		<div data-role="page" id="exploreMultiGroup" data-theme="b" data-add-back-btn="true">
+			<div data-role="header"  data-theme="b">
+				<h1 id="exploreMultiGroupTitle">Explore your area</h1>
+				<a href="#home" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+			</div><!-- /header -->
+			<div data-role="content">
+				<ul id="exploreMultiGroupList" data-role="listview"></ul>
+			</div><!-- /content -->
+		</div><!-- /exploreGroup -->    		
+		
         
 		<!-- Start of second page: #search -->
 		<div data-role="page" id="exploreGroup" data-theme="b" data-add-back-btn="true">
@@ -442,11 +466,14 @@
                     <h3>Explore your area</h3>
                     <div data-role="fieldcontain">
                         <fieldset data-role="controlgroup" data-type="horizontal">
-                            <input type="radio" name="radio-group-browser-selector" id="radio-group-browser" value=""/>
-                            <label for="radio-group-browser">Lifeforms</label>                            
+                            <input type="radio" name="radio-group-browser-selector" id="radio-simple-browser" value=""/>
+                            <label for="radio-simple-browser">Simple</label>                            
+
+                            <input type="radio" name="radio-group-browser-selector" id="radio-advanced-browser" value=""/>
+                            <label for="radio-advanced-browser">Advanced</label>  
                             
                             <input type="radio" name="radio-group-browser-selector" id="radio-taxonomy-browser" value=""/>
-                            <label for="radio-taxonomy-browser">Taxonomy</label>                                                        
+                            <label for="radio-taxonomy-browser">Taxonomy</label>    
                         </fieldset>
 						<p><strong>Note: </strong>Lifeforms are simple groups for species e.g. Birds, Frogs. Taxonomy will give you a taxonomic hierarchy starting at the kingdom level e.g. Animalia.</p>                                                                            
                     </div>
