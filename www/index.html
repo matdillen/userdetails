@@ -10,7 +10,7 @@
 		<link href="jquery-mobile.css" type="text/css" rel="stylesheet" />
 		<link href="photoswipe.min.css" type="text/css" rel="stylesheet" />
         <!-- NOTE: Phonegap JS import should be removed for web deployments -->
-		<script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
+		<script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>
 		<script type="text/javascript" src="klass.min.js"></script>
 		<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
 		<script type="text/javascript" src="jquery.dateFormat-1.0.min.js"></script>
@@ -53,9 +53,7 @@
 				} catch(err) {
 					console.log('unabled to load photoswipe');
 				}
-				
 				initialiseFromConfig();
-                              
 			});
             
             $(document).bind('pagebeforechange', function( event, data ) {
@@ -63,7 +61,6 @@
                              ? data.options.pageData
                              : null;
             });            
-            
 
 			$('#location').live('pageshow', function(event) {
 				if(!OZA.mapInitialised) {
@@ -127,6 +124,8 @@
 			$('#exploreYourArea' ).live( 'pagehide',function(event, ui){ hidePageLoadingMsg(); });            
 			$('#latestImages' ).live( 'pagehide',function(event, ui){ hidePageLoadingMsg(); });            			
 			$('#exploreGroup' ).live( 'pagehide',function(event, ui){ hidePageLoadingMsg(); });            						
+			
+			//$.mobile.buttonMarkup.hoverDelay = 80; //defaults to 200
             
 		</script>
 	</head>
@@ -243,8 +242,7 @@
 			<div data-role="content">
 				<ul id="exploreMultiGroupList" data-role="listview"></ul>
 			</div><!-- /content -->
-		</div><!-- /exploreGroup -->    		
-		
+		</div><!-- /exploreMultiGroup -->    		
         
 		<!-- Start of second page: #search -->
 		<div data-role="page" id="exploreGroup" data-theme="b" data-add-back-btn="true">
@@ -258,6 +256,7 @@
 				<a  style="margin-top:20px;" id="loadMoreForCurrentGroup" href="javascript:loadMoreForCurrentGroup();" data-role="button">Load more </a>
 			</div><!-- /content -->
 		</div><!-- /exploreGroup -->
+		
 		<!-- Start of second page: #exploreGroupWithGallery -->
 		<div data-role="page" id="exploreGroupWithGallery" data-theme="b" data-add-back-btn="true">
 			<div data-role="header"  data-theme="b">
@@ -272,6 +271,7 @@
 				</div>
 			</div><!-- /content -->
 		</div><!-- /page exploreGroupWithGallery -->
+		
 		<!-- Start of second page: #speciesPage -->
 		<div data-role="page" id="speciesPage" data-theme="b" data-add-back-btn="true" class="type-home">
 			<div data-role="header"  data-theme="b">
@@ -477,6 +477,16 @@
                         </fieldset>
 						<p><strong>Note: </strong>Lifeforms are simple groups for species e.g. Birds, Frogs. Taxonomy will give you a taxonomic hierarchy starting at the kingdom level e.g. Animalia.</p>                                                                            
                     </div>
+                    
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup" data-type="horizontal">
+                            <input type="radio" name="radio-name-order-selector" id="radio-name-order-common" value=""/>
+                            <label for="radio-name-order-common">Common</label>                          
+                            <input type="radio" name="radio-name-order-selector" id="radio-name-order-scientific" value=""/>
+                            <label for="radio-name-order-scientific">Scientific</label>                            
+                        </fieldset>
+						<p>Sort names in results by common name or scientific name</p>                                                                            
+                    </div>                                        
                 </div>
                 
                 <div data-role="collapsible" data-theme="b" data-content-theme="c" data-collapsed="true">
@@ -490,6 +500,15 @@
                         </fieldset>
                         <p><strong>Note: </strong>This will affect whether species images are displayed in search results and Explore your area.</p>                                                    
                     </div>
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup" data-type="horizontal">
+                            <input type="radio" name="radio-search-image-only-selector" id="radio-search-image-only-on" value=""/>
+                            <label for="radio-search-image-only-on">Yes</label>                            
+                            <input type="radio" name="radio-search-image-only-selector" id="radio-search-image-only-off" value=""/>
+                            <label for="radio-search-image-only-off">No</label>  
+                        </fieldset>
+						<p>Only show taxa with images in search. Useful if using OzAtlas for identification purposes only.</p>                                                                            
+                    </div>                                         
                 </div>        
                 
                 <div data-role="collapsible" data-theme="b" data-content-theme="c" data-collapsed="true">
