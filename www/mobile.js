@@ -1,3 +1,9 @@
+var DEFAULT_NO_OF_IMAGES_SHOW = 2;
+var DEFAULT_ZOOM = 12;
+var DEFAULT_LATITUDE = -33.87;
+var DEFAULT_LONGITUDE = 151.2071
+var DEFAULT_BOUNDS = new google.maps.LatLngBounds(new google.maps.LatLng(-41, 118), new google.maps.LatLng(-14, 148));
+
 var OZA = {
     latestImagesStartIndex: 0,
     latestImagesPageSize: 50,
@@ -34,17 +40,12 @@ var OZA = {
     onlyTaxaWithImagesInSearchResults: false    
 }
 
-var DEFAULT_NO_OF_IMAGES_SHOW = 2;
-var DEFAULT_ZOOM = 12;
-var DEFAULT_LATITUDE = -33.87;
-var DEFAULT_LONGITUDE = 151.2071
-var DEFAULT_BOUNDS = new google.maps.LatLngBounds(new google.maps.LatLng(-41, 118), new google.maps.LatLng(-14, 148));
 
-//var M_URL = 'https://m.ala.org.au';
-var M_URL = 'http://localhost:8080/mobileauth/proxy';
+var M_URL = 'https://m.ala.org.au';
+//var M_URL = 'http://localhost:8080/mobileauth/proxy';
 
-//var BIE_URL = 'https://m.ala.org.au';
-var BIE_URL = 'http://bie.ala.org.au';
+var BIE_URL = 'https://m.ala.org.au';
+//var BIE_URL = 'http://bie.ala.org.au';
 
 //enum for picture source
 function PictureSourceType() {};
@@ -218,7 +219,7 @@ function setResultsWithImagesOnly(im) {
 }
 
 function initializeMap() {
-
+    OZA.map = null;
     var mapdiv = document.getElementById("map_canvas");
 
     console.log('detected window height: ' + $(window).height());
@@ -244,17 +245,21 @@ function initializeMap() {
         mapdiv.style.height = '270px';
     }
 
+	console.log('####### Initialising the map.....');
+
+	console.log('Center the map on: ' + OZA.currentLatitude +',' + OZA.currentLongitude);    
+
     var myOptions = {
         zoom: OZA.defaultZoom,
         center: new google.maps.LatLng(OZA.currentLatitude, OZA.currentLongitude),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoomControl: true,
-        zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.SMALL
-        },
+        zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
         mapTypeControl: true
     };
     OZA.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+
+	console.log('Default zoom to use: ' + OZA.defaultZoom);
 
     var location = new google.maps.LatLng(OZA.currentLatitude, OZA.currentLongitude);
     OZA.marker = new google.maps.Marker({
@@ -265,13 +270,13 @@ function initializeMap() {
         title: 'marker Location'
     });
     
-    OZA.map.fitBounds(DEFAULT_BOUNDS);    
+    //OZA.map.fitBounds(DEFAULT_BOUNDS);    
     
     google.maps.event.addListener(OZA.marker, 'dragend', function () {
         setCurrentLocationToMarkerCoords();
     });
 
-    google.maps.event.addListener(OZA.map, 'zoom_changed', function () {
+    google.maps.event.addListener(OZA.map, 'bounds_changed', function () {
         //setTimeout(moveToDarwin, 3000);
         if (OZA.usingExploreYourArea) {
             setOverlayMarker(false);
@@ -282,6 +287,8 @@ function initializeMap() {
     if (OZA.usingExploreYourArea) {
         setOverlayMarker(false);
     }
+
+	console.log('Current zoom: ' + OZA.map.getZoom());
 
     // bind OZA.circle to OZA.marker
     OZA.mapInitialised = true;
@@ -1299,7 +1306,44 @@ function recordSighting() {
     }
 }
 
+//calculates distance between two points in km's
+function calcDistance(p1, p2){
+    return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
+}
+
 function getRadiusForCurrentZoom() {
+        
+    if(OZA.map != null && OZA.map.getBounds() != null){
+        var latLngBounds = OZA.map.getBounds();
+        //console.log('OZA.map: ' + OZA.map);            
+        console.log('lat Lng Bounds: ' + latLngBounds);    
+        var northeast = latLngBounds.getNorthEast();
+        var southwest = latLngBounds.getSouthWest();        
+        var northwest = new google.maps.LatLng(northeast.lat(), southwest.lng());
+        var southeast = new google.maps.LatLng(southwest.lat(), northeast.lng());    
+        var northSouth = calcDistance(northwest,southwest);
+        var eastWest = calcDistance(northeast,northwest);    
+        
+        var radius = null;
+        
+        if(northSouth > eastWest){            
+            radius =  Math.floor(eastWest * 1000) / 2.3;
+        } else {
+            radius =  Math.floor(northSouth * 1000) / 2.3;            
+        } 
+        console.log('Calculated radius (/2.3): ' + radius);
+        if(radius < 400000){
+            return radius;
+        } else {
+            return 400000;
+        }
+        
+    } else {        
+        return 400000;
+    }
+   
+    
+/*  
     var zoom = OZA.map.getZoom();
     //TODO replace this. should be able to get
     //current viewed area and set the radius based on this
@@ -1320,7 +1364,9 @@ function getRadiusForCurrentZoom() {
     if (zoom == 6) return 150000;
     if (zoom == 5) return 300000;
     if (zoom == 4) return 500000;
-    return 800000;
+    return 500000;
+    */  
+ /* */
 }
 
 function removeOverlayMarker() {
@@ -1344,12 +1390,16 @@ function setOverlayMarker(zoomToBounds) {
         fillOpacity: 0.2,
         zIndex: -10
     });
-
+    
+    
     // bind OZA.circle to OZA.marker
     OZA.circle.bindTo('center', OZA.marker, 'position');
     if (zoomToBounds) {
         OZA.map.fitBounds(OZA.circle.getBounds());
     }
+    
+    //recenter
+  	OZA.map.setCenter(OZA.marker.getPosition());
 }
 
 function setMarkerToCurrentLocation() {

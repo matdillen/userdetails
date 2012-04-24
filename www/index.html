@@ -6,18 +6,17 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<title>Mobile | Atlas of Living Australia</title>
 		<link href="ala2011.css" type="text/css" rel="stylesheet" />
-		<link href="jquery.mobile.structure-1.0.min.css" type="text/css" rel="stylesheet" />
+		<link href="jquery.mobile.structure-1.1.0.min.css" type="text/css" rel="stylesheet" />
 		<link href="jquery-mobile.css" type="text/css" rel="stylesheet" />
 		<link href="photoswipe.min.css" type="text/css" rel="stylesheet" />
         <!-- NOTE: Phonegap JS import should be removed for web deployments -->
 		<script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>
 		<script type="text/javascript" src="klass.min.js"></script>
-		<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="jquery.dateFormat-1.0.min.js"></script>
-		<script type="text/javascript" src="jquery.mobile-1.0.min.js"></script>
+		<script type="text/javascript" src="jquery.mobile-1.1.0.min.js"></script>
 		<script type="text/javascript" src="code.photoswipe.jquery-3.0.4.min.js"></script>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-		<!-- <script type="text/javascript" src="mobile.min.js"></script>	                        -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false"></script>            
 		<script type="text/javascript" src="mobile.js"></script>
 		<script type="text/javascript">
             
@@ -54,12 +53,16 @@
 					console.log('unabled to load photoswipe');
 				}
 				initialiseFromConfig();
+                //$(window).resize(function() {
+                    // $('#log').append('<div>Handler for .resize() called.</div>');
+                    //initializeMap();                                 
+                //});                                                            
 			});
             
             $(document).bind('pagebeforechange', function( event, data ) {
-                             $.mobile.pageData = (data && data.options && data.options.pageData)
-                             ? data.options.pageData
-                             : null;
+                $.mobile.pageData = (data && data.options && data.options.pageData)
+                ? data.options.pageData
+                : null;
             });            
 
 			$('#location').live('pageshow', function(event) {
