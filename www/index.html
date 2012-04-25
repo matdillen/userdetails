@@ -53,10 +53,10 @@
 					console.log('unabled to load photoswipe');
 				}
 				initialiseFromConfig();
-                //$(window).resize(function() {
+                $(window).resize(function() {
                     // $('#log').append('<div>Handler for .resize() called.</div>');
                     //initializeMap();                                 
-                //});                                                            
+                });                                                            
 			});
             
             $(document).bind('pagebeforechange', function( event, data ) {
@@ -66,9 +66,18 @@
             });            
 
 			$('#location').live('pageshow', function(event) {
-				if(!OZA.mapInitialised) {
-					initializeMap();
-				}
+				if(OZA.usingExploreYourArea){
+					$('#nextActionFromLocation').attr('href', 'javascript:openLocationForExplore;');				
+    				if (OZA.exploreYourAreaBrowser == EYA.TAXONOMY) {
+				        $('#nextActionFromLocation').attr('href', 'javascript:startExploreByTaxonomy();');        
+				    } else if (OZA.exploreYourAreaBrowser == EYA.ADVANCED){
+				       $('#nextActionFromLocation').attr('href', '#exploreByMultiGroups');
+				    } else {
+				        $('#nextActionFromLocation').attr('href', '#exploreYourArea');
+				    }					
+				} else {
+					$('#nextActionFromLocation').attr('href', 'javascript:openLocationForRecording();');				
+				}			
 			});
 
 			$('#savedData').live('pageshow', function(event) {

@@ -1,5 +1,5 @@
 var DEFAULT_NO_OF_IMAGES_SHOW = 2;
-var DEFAULT_ZOOM = 12;
+var DEFAULT_ZOOM = 13;
 var DEFAULT_LATITUDE = -33.87;
 var DEFAULT_LONGITUDE = 151.2071
 var DEFAULT_BOUNDS = new google.maps.LatLngBounds(new google.maps.LatLng(-41, 118), new google.maps.LatLng(-14, 148));
@@ -40,7 +40,6 @@ var OZA = {
     onlyTaxaWithImagesInSearchResults: false    
 }
 
-
 var M_URL = 'https://m.ala.org.au';
 //var M_URL = 'http://localhost:8080/mobileauth/proxy';
 
@@ -65,161 +64,7 @@ function setupPhotoSwipe(galleryId){
     });
 }
 
-function initialiseFromConfig() {
-
-    //if display large, use better quality images              
-    console.log("Window width:" + $(window).width() + ", height: "+ $(window).height());
-    if ($(window).width() > 400) {
-        console.log("Use large images....");
-        OZA.useLargerImages = true;
-    }
-
-    if ($(window).width() < 500 ||  $(window).height() < 750) {
-        console.log("Use small images for landing background....");
-        $('#home').removeClass('largeBackgroundImage');
-        $('#home').addClass('smallBackgroundImage');
-    }
-
-    console.log("isNative: " + OZA.isNative);
-    if (!OZA.isNative) {
-        //disable saved list functionality - only available in native apps.
-        $('#saveCurrentList').css({'display': 'none'});
-        $('#savedListHomePage').css({'display': 'none'});
-        $('#savedListConfig').css({'display': 'none'});
-    }
-
-    document.getElementById('photofs').addEventListener('change', handleImageSelect, false);
-
-    //get the explore stored preference  
-    $('input:radio[name=radio-group-browser-selector]')[1].checked = true;
-    $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
-    $('input:radio[name=radio-group-browser-selector]')[2].checked = true;      
-    
-    var storedExploreYourAreaBrowser = localStorage.getItem('ala-exploreYourAreaBrowser');
-    console.log('Stored preference for exploreYourAreaBrowser: ' + storedExploreYourAreaBrowser);
-
-    if (storedExploreYourAreaBrowser == EYA.ADVANCED){
-        console.log('Setting radio button to group');
-        $('input:radio[name=radio-group-browser-selector]')[0].checked = false;
-        $('input:radio[name=radio-group-browser-selector]')[1].checked = true;
-        $('input:radio[name=radio-group-browser-selector]')[2].checked = false;                
-        OZA.exploreYourAreaBrowser = storedExploreYourAreaBrowser;
-    } else if(storedExploreYourAreaBrowser == EYA.TAXONOMY){
-        console.log('Setting radio button to taxonomy');
-        $('input:radio[name=radio-group-browser-selector]')[0].checked = false;        
-        $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
-        $('input:radio[name=radio-group-browser-selector]')[2].checked = true;        
-        OZA.exploreYourAreaBrowser = storedExploreYourAreaBrowser;
-    } else {
-    	//default to simple
-        $('input:radio[name=radio-group-browser-selector]')[0].checked = true;
-        $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
-        $('input:radio[name=radio-group-browser-selector]')[2].checked = false;        
-        OZA.exploreYourAreaBrowser = EYA.SIMPLE;        
-    }
-
-    $('#radio-simple-browser').bind('click', function () { setExploreAreaBrowser(EYA.SIMPLE); });
-    $('#radio-advanced-browser').bind('click', function () { setExploreAreaBrowser(EYA.ADVANCED); });    
-    $('#radio-taxonomy-browser').bind('click', function () { setExploreAreaBrowser(EYA.TAXONOMY); });
-
-
-    //get the show images stored preference                                            
-    var storedShowImagesInSearch = localStorage.getItem('ala-showImagesInSearch');
-    console.log('storedShowImagesInSearch: ' + storedShowImagesInSearch);
-    if (storedShowImagesInSearch == null || storedShowImagesInSearch == 'true') {
-        console.log('Setting radio button show images to ON');
-        $('input:radio[name=radio-search-images-toggle]')[0].checked = true;
-        OZA.showImagesInSearch = true;
-    } else {
-        console.log('Setting radio button show images to OFF');
-        $('input:radio[name=radio-search-images-toggle]')[1].checked = true;
-        $('input:radio[name=radio-search-images-toggle]')[0].checked = false;
-        OZA.showImagesInSearch = false;
-    }
-    $('#radio-images-on').bind('click', function (e, data) { setImagesInSearch(true); });
-    $('#radio-images-off').bind('click', function (e, data) { setImagesInSearch(false); });        
-    
-
-    //get the number of images on species page stored preference              
-    var storedNumberOfImagesToShow = localStorage.getItem('ala-numberOfImagesToShow');
-    if (storedNumberOfImagesToShow != null) {
-        $('#numberOfImagesToShow').val(storedNumberOfImagesToShow);
-        OZA.noOfImagesToShow = storedNumberOfImagesToShow;
-    } else {
-        $('#numberOfImagesToShow').val(DEFAULT_NO_OF_IMAGES_SHOW);
-        OZA.noOfImagesToShow = DEFAULT_NO_OF_IMAGES_SHOW;
-    }
-    $('#numberOfImagesToShow').bind('change', function (e, data) { 
-        OZA.noOfImagesToShow = $('#numberOfImagesToShow').val();   
-    	localStorage.setItem('ala-numberOfImagesToShow',OZA.noOfImagesToShow);
-    });    
-
-        
-	//sort results by common or scientific name
-    $('input:radio[name=radio-name-order-selector]')[0].checked = true;
-    $('input:radio[name=radio-name-order-selector]')[1].checked = false;	
-    var storedSortByCommon = localStorage.getItem('ala-sortByCommon');
-    if(storedSortByCommon == 'false'){
-	    $('input:radio[name=radio-name-order-selector]')[0].checked = false;
-	    $('input:radio[name=radio-name-order-selector]')[1].checked = true;	    
-    }    
-    $('#radio-name-order-common').bind('click', function (e, data) { setNameSortByCommon(true); });
-    $('#radio-name-order-scientific').bind('click', function (e, data) { setNameSortByCommon(false); });
-    
-    
-	// show a search result if we have images for it
-    $('input:radio[name=radio-search-image-only-selector]')[0].checked = true;
-    $('input:radio[name=radio-search-image-only-selector]')[1].checked = false;	
-    var storedResultsWithImagesOnly = localStorage.getItem('ala-resultsWithImagesOnly');
-    if(storedResultsWithImagesOnly == 'false'){
-	    $('input:radio[name=radio-search-image-only-selector]')[0].checked = false;
-	    $('input:radio[name=radio-search-image-only-selector]')[1].checked = true;	    
-    }    
-    $('#radio-search-image-only-on').bind('click', function (e, data) { setResultsWithImagesOnly(true); });
-    $('#radio-search-image-only-off').bind('click', function (e, data) { setResultsWithImagesOnly(false); });    
-}
-
-function setExploreAreaBrowser(option) {
-    console.log('Setting ala-exploreYourAreaBrowser to ' + option);
-    OZA.exploreYourAreaBrowser = option;
-    localStorage.setItem('ala-exploreYourAreaBrowser', option);
-}
-
-function setImagesInSearch(showImages) {
-    console.log('Setting show images to ' + showImages);
-    if (showImages) {
-        OZA.showImagesInSearch = true;
-        localStorage.setItem('ala-showImagesInSearch', 'true');
-    } else {
-        OZA.showImagesInSearch = false;
-        localStorage.setItem('ala-showImagesInSearch', 'false');
-    }
-}
-
-function setNameSortByCommon(sortByCommonName) {
-    console.log('Setting to sort results by common name' + OZA.sortByCommonName);
-    if (sortByCommonName) {
-        OZA.orderByCommonName = true;
-        localStorage.setItem('ala-sortByCommon', 'true');
-    } else {
-        OZA.orderByCommonName = false;
-        localStorage.setItem('ala-sortByCommon', 'false');
-    }
-}
-
-function setResultsWithImagesOnly(im) {
-    console.log('Setting to sort results by common name' + OZA.sortByCommonName);
-    if (sortByCommonName) {
-        OZA.orderByCommonName = true;
-        localStorage.setItem('ala-sortByCommon', 'true');
-    } else {
-        OZA.orderByCommonName = false;
-        localStorage.setItem('ala-sortByCommon', 'false');
-    }
-}
-
-function initializeMap() {
-    OZA.map = null;
+function setMapCanvasSize(){
     var mapdiv = document.getElementById("map_canvas");
 
     console.log('detected window height: ' + $(window).height());
@@ -234,64 +79,125 @@ function initializeMap() {
                 mapdiv.style.width = ($(window).width() - 20) + 'px';
                 mapdiv.style.height = ($(window).height() - 160) + 'px';
             });
-
         } else {
             mapdiv.style.width = '304px';
             mapdiv.style.height = '260px';
         }
-
     } else {
         mapdiv.style.width = '304px';
         mapdiv.style.height = '270px';
     }
+}
 
-	console.log('####### Initialising the map.....');
+function openLocationForExplore() {
+	if(!OZA.mapInitialised){
+	  // get a location to start
+      navigator.geolocation.getCurrentPosition(
+    	function(position){
+		  initialiseMap(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+		  initialiseMapForExplore(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));		  
+    	}, 
+    	function(position){
+		  initialiseMap(new google.maps.LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE));        	
+		  initialiseMapForExplore(new google.maps.LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE));        			  
+    	}
+      );  	
+    } else {
+	    OZA.circle.setVisible(true);
+    } 
+    
+    OZA.usingExploreYourArea = true;
+    
+    $.mobile.changePage('#location');
+}
 
-	console.log('Center the map on: ' + OZA.currentLatitude +',' + OZA.currentLongitude);    
 
+function openLocationForRecording() {
+
+	console.log('Open location for recording.....');
+	if(!OZA.mapInitialised){
+	  // get a location to start
+      navigator.geolocation.getCurrentPosition(
+    	function(position){
+		  initialiseMap(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+    	}, 
+    	function(position){
+		  initialiseMap(new google.maps.LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE));        	
+    	}
+      );  	
+    } 
+    
+    OZA.usingExploreYourArea = false;
+    //remove the overlay if its there
+    removeOverlayMarker();
+    $('.exploreYourAreaHelp').css({'display': 'none'});
+    $('#nextActionFromLocation').attr('href', '#details');
+    $.mobile.changePage('#location');
+    
+    console.log('Location set by user: ' + OZA.locationSetByUser);
+    if(!OZA.locationSetByUser){
+    	setMarkerToCurrentLocation();
+		OZA.locationSetByUser = true;
+    }	    
+}
+
+function initialiseMap(latLng){
+
+	if(!OZA.mapInitialised){
+	/**********GENERIC SETUP*********/
+	setMapCanvasSize();	
+	console.log('Found location, setting the zoom level to : ' + 13);
+	$('#latitude').val(latLng.lat());
+	$('#longitude').val(latLng.lng());
+	$('#latitudeDisplay').html(latLng.lat());
+	$('#longitudeDisplay').html(latLng.lng());
+	OZA.currentLatitude = latLng.lat();
+	OZA.currentLongitude = latLng.lng();	
+	
+	// initialise map centred on the location, with default zoom
     var myOptions = {
         zoom: OZA.defaultZoom,
-        center: new google.maps.LatLng(OZA.currentLatitude, OZA.currentLongitude),
+        center: latLng,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoomControl: true,
         zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
         mapTypeControl: true
     };
-    OZA.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
-
-	console.log('Default zoom to use: ' + OZA.defaultZoom);
-
-    var location = new google.maps.LatLng(OZA.currentLatitude, OZA.currentLongitude);
+    
+    OZA.map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);    
+	
+	//add the marker
     OZA.marker = new google.maps.Marker({
         map: OZA.map,
         draggable: true,
         animation: google.maps.Animation.DROP,
-        position: location,
-        title: 'marker Location'
-    });
-    
-    //OZA.map.fitBounds(DEFAULT_BOUNDS);    
-    
+        position: latLng,
+        title: 'Current Location'
+    });		
+	
     google.maps.event.addListener(OZA.marker, 'dragend', function () {
         setCurrentLocationToMarkerCoords();
-    });
-
-    google.maps.event.addListener(OZA.map, 'bounds_changed', function () {
-        //setTimeout(moveToDarwin, 3000);
-        if (OZA.usingExploreYourArea) {
-            setOverlayMarker(false);
-        }
-    });
+    }); 
     
-    //initialise the OZA.circle
-    if (OZA.usingExploreYourArea) {
-        setOverlayMarker(false);
-    }
+	// add the circle overlay
+    google.maps.event.addListener(OZA.map, 'bounds_changed', function () {
+        setOverlayMarker(false);        
+    });	 
+    }          
 
-	console.log('Current zoom: ' + OZA.map.getZoom());
+    OZA.mapInitialised = true;    
+  	/**********GENERIC SETUP END*********/
+}
 
-    // bind OZA.circle to OZA.marker
-    OZA.mapInitialised = true;
+function initialiseMapForExplore(latLng){
+
+    OZA.usingExploreYourArea = true;
+    console.log('Using explore by : ' + OZA.exploreYourAreaBrowser);
+    
+    
+
+
+    $('.exploreYourAreaHelp').css({'display': 'block'});    
 }
 
 function searchForPlace() {
@@ -318,6 +224,7 @@ function searchForPlace() {
             OZA.map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(viewport.southwest.lat, viewport.southwest.lng), new google.maps.LatLng(viewport.northeast.lat, viewport.northeast.lng)));
 
             if (OZA.usingExploreYourArea) {
+   		        console.log('####### Search for place - setting marker : ' + OZA.map.getZoom());
                 setOverlayMarker(true);
             }
 
@@ -722,6 +629,7 @@ function resetExploreByTaxonomy() {
 }
 
 function exploreByTaxonomy(taxonName, rank) {
+    console.log('########## exploreByTaxonomy');
 
     $('#exploreByTaxonomyList').empty();
 
@@ -799,6 +707,7 @@ function exploreByTaxonomy(taxonName, rank) {
 }
 
 function exploreByMultiGroups() {
+    console.log('########## exploreByMultiGroups');
 
     var searchUrl = M_URL + '/searchByMultiRanks?lat=' + OZA.currentLatitude + '&lon=' + OZA.currentLongitude + '&radius=' + getCurrentRadius();
     
@@ -835,7 +744,7 @@ function exploreByMultiGroups() {
 
 function exploreMultiGroup(facetName, speciesGroup, commonName) {
 
-    console.log("Loading group: " + commonName);
+    console.log("##### Loading group: " + commonName);
 
     showPageLoadingMsg('Loading group ' + speciesGroup + '...');
 
@@ -905,7 +814,6 @@ function getNamesObjectFromFacet(facetValue){
 		return {scientificName: parts[0], guid: parts[1], commonName: parts[2] };	
 	}
 }
-
 
 function getPlural(rank) {
     if (rank == 'kingdom') return 'Kingdoms';
@@ -983,9 +891,7 @@ function exploreGroup(speciesGroup) {
 function hidePageLoadingMsg() {
     // the jquery method is buggy    
     $.mobile.hidePageLoadingMsg();
-    $('.ui-loader').css({
-        'display': 'none'
-    });
+    $('.ui-loader').css({'display': 'none'});
 }
 
 function loadMoreForCurrentGroup() {
@@ -1279,8 +1185,8 @@ function setCurrentLocationToMarkerCoords() {
     $('#longitudeDisplay').html(latLng.lng());
     OZA.currentLatitude = latLng.lat();
     OZA.currentLongitude = latLng.lng();
-    // OZA.map.setZoom(14);
     setLocality(latLng.lat(), latLng.lng());
+    console.log('Setting map to current location of user...DONE');    
 }
 
 function recordSighting() {
@@ -1302,7 +1208,8 @@ function recordSighting() {
         $.mobile.changePage('#photoUpload');
     } else {
         console.log('File reader is NOT available for this browser. Sending to set Location...');
-        $.mobile.changePage('#location');
+        //$.mobile.changePage('#location');
+        openLocationForRecording();
     }
 }
 
@@ -1313,10 +1220,14 @@ function calcDistance(p1, p2){
 
 function getRadiusForCurrentZoom() {
         
+    console.log('Getting radius for overlay....' + OZA.map.getZoom());
+    console.log('Getting radius for overlay [BOUNDS]....' + OZA.map.getBounds());    
+    console.log('Getting radius for overlay [MAP]....' + OZA.map);     
+        
     if(OZA.map != null && OZA.map.getBounds() != null){
         var latLngBounds = OZA.map.getBounds();
         //console.log('OZA.map: ' + OZA.map);            
-        console.log('lat Lng Bounds: ' + latLngBounds);    
+        //console.log('lat Lng Bounds: ' + latLngBounds);    
         var northeast = latLngBounds.getNorthEast();
         var southwest = latLngBounds.getSouthWest();        
         var northwest = new google.maps.LatLng(northeast.lat(), southwest.lng());
@@ -1327,19 +1238,21 @@ function getRadiusForCurrentZoom() {
         var radius = null;
         
         if(northSouth > eastWest){            
-            radius =  Math.floor(eastWest * 1000) / 2.3;
+            radius = Math.floor((eastWest * 1000) / 2.3);
         } else {
-            radius =  Math.floor(northSouth * 1000) / 2.3;            
+            radius =  Math.floor((northSouth * 1000) / 2.3);            
         } 
         console.log('Calculated radius (/2.3): ' + radius);
-        if(radius < 400000){
+        if(radius < 100000){
             return radius;
         } else {
-            return 400000;
+            return 100000;
         }
         
-    } else {        
-        return 400000;
+    } else {   
+	    console.log('Getting radius for overlay....returning the default value:' + 100000);    
+         
+        return 100000;
     }
    
     
@@ -1371,18 +1284,23 @@ function getRadiusForCurrentZoom() {
 
 function removeOverlayMarker() {
     if (OZA.circle != null && OZA.map != null) {
-        OZA.circle.setMap(null);
+		OZA.circle.setVisible(false);  
     }
 }
 
 function setOverlayMarker(zoomToBounds) {
 
+	console.log('Setting the overlay marker....' + OZA.map.getZoom());
+
     if (OZA.circle != null) {
         OZA.circle.setMap(null);
     }
+    
+	var radiusToUse =  getRadiusForCurrentZoom();
+    
     OZA.circle = new google.maps.Circle({
         map: OZA.map,
-        radius: getRadiusForCurrentZoom(),
+        radius: radiusToUse,
         strokeWeight: 1,
         strokeColor: 'white',
         strokeOpacity: 0.5,
@@ -1390,12 +1308,14 @@ function setOverlayMarker(zoomToBounds) {
         fillOpacity: 0.2,
         zIndex: -10
     });
-    
+    OZA.circle.setVisible(OZA.usingExploreYourArea);
     
     // bind OZA.circle to OZA.marker
     OZA.circle.bindTo('center', OZA.marker, 'position');
     if (zoomToBounds) {
+		console.log('Setting the overlay marker - zoom to bounds....' + OZA.map.getZoom());    
         OZA.map.fitBounds(OZA.circle.getBounds());
+		console.log('Setting the overlay marker - zoom to bounds....DONE: ' + OZA.map.getZoom());            
     }
     
     //recenter
@@ -1407,9 +1327,7 @@ function setMarkerToCurrentLocation() {
     console.log('Setting marker to current location...');
     
     if (navigator.geolocation) {
-    
         showPageLoadingMsg('Retrieving your location...');
-
         //alert("getting coords....");
         console.log('Getting coordinates...');        
         navigator.geolocation.getCurrentPosition(foundLocation, noLocationFound);
@@ -1425,7 +1343,8 @@ function foundLocation (position) {
 	var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	OZA.map.setCenter(latLng);
 	OZA.marker.setPosition(latLng);
-	OZA.map.setZoom(10);
+	OZA.map.setZoom(13);
+	console.log('Found location, setting the zoom level to : ' + 13);
 	$('#latitude').val(position.coords.latitude);
 	$('#longitude').val(position.coords.longitude);
 	$('#latitudeDisplay').html(position.coords.latitude);
@@ -1435,9 +1354,8 @@ function foundLocation (position) {
 
 	//get the locality with a webservice
 	setLocality(position.coords.latitude, position.coords.longitude);
-	if (OZA.usingExploreYourArea) {
-		setOverlayMarker(true);
-	}
+	console.log('Found location....setting overlay marker...');
+	setOverlayMarker(true);
 }
 
 function noLocationFound() {
@@ -1454,9 +1372,8 @@ function noLocationFound() {
 
 	//get the locality with a webservice
 	setLocality(DEFAULT_LATITUDE, DEFAULT_LONGITUDE);
-	if (OZA.usingExploreYourArea) {
-		setOverlayMarker(true);
-	}
+    console.log('####### NO LOCATION FOUND - setting marker : ' + OZA.map.getZoom());
+	setOverlayMarker(true);
 }
 
 
@@ -1767,54 +1684,6 @@ function authenticateOrSend() {
     }
 }
 
-function openLocationForExplore() {
-	if(OZA.map == null){
-		initializeMap();
-	}
-
-    OZA.usingExploreYourArea = true;
-    
-    console.log('Using explore by : ' + OZA.exploreYourAreaBrowser);
-    
-    if (OZA.exploreYourAreaBrowser == EYA.TAXONOMY) {
-        $('#nextActionFromLocation').attr('href', 'javascript:startExploreByTaxonomy();');        
-    } else if (OZA.exploreYourAreaBrowser == EYA.ADVANCED){
-       $('#nextActionFromLocation').attr('href', '#exploreByMultiGroups');
-    } else {
-        $('#nextActionFromLocation').attr('href', '#exploreYourArea');
-    }
-
-    if (OZA.map != null) {
-        setOverlayMarker(false);
-    }
-    $('.exploreYourAreaHelp').css({'display': 'block'});
-    $.mobile.changePage('#location');
-        
-    if(!OZA.locationSetByUser){
-    	setMarkerToCurrentLocation();
-		OZA.locationSetByUser = true;
-    }
-}
-
-function openLocationForRecording() {
-	if(OZA.map == null){
-		initializeMap();
-	}
-
-
-    OZA.usingExploreYourArea = false;
-    //remove the overlay if its there
-    removeOverlayMarker();
-    $('.exploreYourAreaHelp').css({'display': 'none'});
-    $('#nextActionFromLocation').attr('href', '#details');
-    $.mobile.changePage('#location');
-    
-    console.log('Location set by user: ' + OZA.locationSetByUser);
-    if(!OZA.locationSetByUser){
-    	setMarkerToCurrentLocation();
-		OZA.locationSetByUser = true;
-    }	    
-}
 
 function toggleBounce() {
     if (OZA.marker.getAnimation() != null) {
@@ -1947,7 +1816,7 @@ function authenticate(userName, password) {
                 localStorage.setItem('ala-authKey', data.authKey);
                 console.log('Authentication success. Using key: ' + localStorage.getItem('ala-authKey'));
             } catch (error) {
-                console.log('Problem storing auth details - privat browsing may be in use');
+                console.log('Problem storing auth details - private browsing may be in use');
             }
         },
         error: function (xhr, desc, err) {
@@ -2025,4 +1894,157 @@ function getAreaDescription(){
 	} else {
 		return OZA.circle.getRadius() + ' metres around ' +  OZA.currentAddress;
 	}
+}
+
+function initialiseFromConfig() {
+
+    //if display large, use better quality images              
+    console.log("Window width:" + $(window).width() + ", height: "+ $(window).height());
+    if ($(window).width() > 400) {
+        console.log("Use large images....");
+        OZA.useLargerImages = true;
+    }
+
+    if ($(window).width() < 500 ||  $(window).height() < 750) {
+        console.log("Use small images for landing background....");
+        $('#home').removeClass('largeBackgroundImage');
+        $('#home').addClass('smallBackgroundImage');
+    }
+
+    console.log("isNative: " + OZA.isNative);
+    if (!OZA.isNative) {
+        //disable saved list functionality - only available in native apps.
+        $('#saveCurrentList').css({'display': 'none'});
+        $('#savedListHomePage').css({'display': 'none'});
+        $('#savedListConfig').css({'display': 'none'});
+    }
+
+    document.getElementById('photofs').addEventListener('change', handleImageSelect, false);
+
+    //get the explore stored preference  
+    $('input:radio[name=radio-group-browser-selector]')[0].checked = true;
+    $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
+    $('input:radio[name=radio-group-browser-selector]')[2].checked = true;      
+    
+    var storedExploreYourAreaBrowser = localStorage.getItem('ala-exploreYourAreaBrowser');
+    console.log('Stored preference for exploreYourAreaBrowser: ' + storedExploreYourAreaBrowser);
+
+    if (storedExploreYourAreaBrowser == EYA.ADVANCED){
+        console.log('Setting radio button to group');
+        $('input:radio[name=radio-group-browser-selector]')[0].checked = false;
+        $('input:radio[name=radio-group-browser-selector]')[1].checked = true;
+        $('input:radio[name=radio-group-browser-selector]')[2].checked = false;                
+        OZA.exploreYourAreaBrowser = storedExploreYourAreaBrowser;
+    } else if(storedExploreYourAreaBrowser == EYA.TAXONOMY){
+        console.log('Setting radio button to taxonomy');
+        $('input:radio[name=radio-group-browser-selector]')[0].checked = false;        
+        $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
+        $('input:radio[name=radio-group-browser-selector]')[2].checked = true;        
+        OZA.exploreYourAreaBrowser = storedExploreYourAreaBrowser;
+    } else {
+    	//default to simple
+        $('input:radio[name=radio-group-browser-selector]')[0].checked = true;
+        $('input:radio[name=radio-group-browser-selector]')[1].checked = false;
+        $('input:radio[name=radio-group-browser-selector]')[2].checked = false;        
+        OZA.exploreYourAreaBrowser = EYA.SIMPLE;        
+    }
+
+    $('#radio-simple-browser').bind('click', function () { setExploreAreaBrowser(EYA.SIMPLE); });
+    $('#radio-advanced-browser').bind('click', function () { setExploreAreaBrowser(EYA.ADVANCED); });    
+    $('#radio-taxonomy-browser').bind('click', function () { setExploreAreaBrowser(EYA.TAXONOMY); });
+
+
+    //get the show images stored preference                                            
+    var storedShowImagesInSearch = localStorage.getItem('ala-showImagesInSearch');
+    console.log('storedShowImagesInSearch: ' + storedShowImagesInSearch);
+    if (storedShowImagesInSearch == null || storedShowImagesInSearch == 'true') {
+        console.log('Setting radio button show images to ON');
+        $('input:radio[name=radio-search-images-toggle]')[0].checked = true;
+        OZA.showImagesInSearch = true;
+    } else {
+        console.log('Setting radio button show images to OFF');
+        $('input:radio[name=radio-search-images-toggle]')[1].checked = true;
+        $('input:radio[name=radio-search-images-toggle]')[0].checked = false;
+        OZA.showImagesInSearch = false;
+    }
+    $('#radio-images-on').bind('click', function (e, data) { setImagesInSearch(true); });
+    $('#radio-images-off').bind('click', function (e, data) { setImagesInSearch(false); });        
+    
+
+    //get the number of images on species page stored preference              
+    var storedNumberOfImagesToShow = localStorage.getItem('ala-numberOfImagesToShow');
+    if (storedNumberOfImagesToShow != null) {
+        $('#numberOfImagesToShow').val(storedNumberOfImagesToShow);
+        OZA.noOfImagesToShow = storedNumberOfImagesToShow;
+    } else {
+        $('#numberOfImagesToShow').val(DEFAULT_NO_OF_IMAGES_SHOW);
+        OZA.noOfImagesToShow = DEFAULT_NO_OF_IMAGES_SHOW;
+    }
+    $('#numberOfImagesToShow').bind('change', function (e, data) { 
+        OZA.noOfImagesToShow = $('#numberOfImagesToShow').val();   
+    	localStorage.setItem('ala-numberOfImagesToShow',OZA.noOfImagesToShow);
+    });    
+
+        
+	//sort results by common or scientific name
+    $('input:radio[name=radio-name-order-selector]')[0].checked = true;
+    $('input:radio[name=radio-name-order-selector]')[1].checked = false;	
+    var storedSortByCommon = localStorage.getItem('ala-sortByCommon');
+    if(storedSortByCommon == 'false'){
+	    $('input:radio[name=radio-name-order-selector]')[0].checked = false;
+	    $('input:radio[name=radio-name-order-selector]')[1].checked = true;	    
+    }    
+    $('#radio-name-order-common').bind('click', function (e, data) { setNameSortByCommon(true); });
+    $('#radio-name-order-scientific').bind('click', function (e, data) { setNameSortByCommon(false); });
+    
+    
+	// show a search result if we have images for it
+    $('input:radio[name=radio-search-image-only-selector]')[0].checked = true;
+    $('input:radio[name=radio-search-image-only-selector]')[1].checked = false;	
+    var storedResultsWithImagesOnly = localStorage.getItem('ala-resultsWithImagesOnly');
+    if(storedResultsWithImagesOnly == 'false'){
+	    $('input:radio[name=radio-search-image-only-selector]')[0].checked = false;
+	    $('input:radio[name=radio-search-image-only-selector]')[1].checked = true;	    
+    }    
+    $('#radio-search-image-only-on').bind('click', function (e, data) { setResultsWithImagesOnly(true); });
+    $('#radio-search-image-only-off').bind('click', function (e, data) { setResultsWithImagesOnly(false); });    
+}
+
+function setExploreAreaBrowser(option) {
+    console.log('Setting ala-exploreYourAreaBrowser to ' + option);
+    OZA.exploreYourAreaBrowser = option;
+    localStorage.setItem('ala-exploreYourAreaBrowser', option);
+}
+
+function setImagesInSearch(showImages) {
+    console.log('Setting show images to ' + showImages);
+    if (showImages) {
+        OZA.showImagesInSearch = true;
+        localStorage.setItem('ala-showImagesInSearch', 'true');
+    } else {
+        OZA.showImagesInSearch = false;
+        localStorage.setItem('ala-showImagesInSearch', 'false');
+    }
+}
+
+function setNameSortByCommon(sortByCommonName) {
+    console.log('Setting to sort results by common name' + OZA.sortByCommonName);
+    if (sortByCommonName) {
+        OZA.orderByCommonName = true;
+        localStorage.setItem('ala-sortByCommon', 'true');
+    } else {
+        OZA.orderByCommonName = false;
+        localStorage.setItem('ala-sortByCommon', 'false');
+    }
+}
+
+function setResultsWithImagesOnly(im) {
+    console.log('Setting to sort results by common name' + OZA.sortByCommonName);
+    if (sortByCommonName) {
+        OZA.orderByCommonName = true;
+        localStorage.setItem('ala-sortByCommon', 'true');
+    } else {
+        OZA.orderByCommonName = false;
+        localStorage.setItem('ala-sortByCommon', 'false');
+    }
 }
