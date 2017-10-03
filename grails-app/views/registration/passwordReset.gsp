@@ -3,7 +3,7 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>Please supply your new password</title>
+    <title><g:message code="registration.passwordReset.title" /></title>
 </head>
 <body>
 <asset:script type="text/javascript">
@@ -21,7 +21,7 @@
                 if($('#reenteredPassword').val() != $('#password').val()) {
                     event.preventDefault();
                     processingPasswordReset = false;
-                    alert("The supplied passwords do not match!")
+                    alert("${message(code: "updatePasswordCommand.reenteredPassword.validator.error")}");
                     $('#submitResetBtn').removeAttr('disabled');
                 }
             }

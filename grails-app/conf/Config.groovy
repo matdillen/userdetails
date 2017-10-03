@@ -120,7 +120,7 @@ security {
 // set per-environment serverURL stem for creating absolute links
 environments {
     development {
-        grails.serverURL = "http://devt.ala.org.au:8080/userdetails"
+        grails.serverURL = "http://localhost:8080/userdetails"
         security.cas.appServerName = "http://devt.ala.org.au:8080"
         grails.logging.jul.usebridge = true
         grails {
@@ -135,14 +135,16 @@ environments {
         security.cas.appServerName = "http://auth.ala.org.au"
     }
     production {
-        grails.serverURL = "http://auth.ala.org.au/userdetails"
-        security.cas.appServerName = "http://auth.ala.org.au"
         grails.logging.jul.usebridge = false
         grails {
           mail {
             host = "localhost"
             port = 25
             username = postie.emailSender
+            props = ["mail.smtp.auth":"true",
+                       "mail.smtp.socketFactory.port":"465",
+                       "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+                       "mail.smtp.socketFactory.fallback":"false"]
           }
         }
     }

@@ -11,7 +11,7 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><a href="${createLink(controller:'admin', action:'index')}"><i class="glyphicon glyphicon-wrench"></i>&nbsp;Administration</a></li>
+                <li><a href="${createLink(controller:'admin', action:'index')}"><i class="icon-wrench"></i>&nbsp;<g:message code="authorisedSystem.administration" /></a></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
@@ -20,21 +20,21 @@
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-            <div class="row">
-                <div class="col-md-8">
+            <div class="row-fluid">
+                <div class="span8">
                     <div class="form-horizontal pull-right" style="margin-bottom: 10px">
-                        <g:textField name="q" value="${params.q}" /> <button type="button" class="btn btn-default" id="btnSearch">Search</button>
+                        <g:textField name="q" value="${params.q}" /> <button type="button" class="btn" id="btnSearch"><g:message code="authorisedSystem.search" />Search</button>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-8">
+            <div class="row-fluid">
+                <div class="span8">
                     <table class="table table-bordered table-striped table-condensed">
                     <thead>
                         <tr>
                             <g:sortableColumn property="host" title="${message(code: 'authorisedSystem.host.label', default: 'Host')}" />
-                            <th>Hostname</th>
-                            <th>Description</th>
+                            <th><g:message code="authorisedSystem.hostname" /></th>
+                            <th><g:message code="authorisedSystem.description" /></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -45,7 +45,7 @@
                             <td><div class="hostname" host="${authorisedSystemInstance.host}"><img src="${resource(dir:'images', file:'spinner.gif')}"/></div></td>
                             <td>${authorisedSystemInstance.description}</td>
                             <td>
-                                <a href="${createLink(action:'edit', id:authorisedSystemInstance.id)}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="${createLink(action:'edit', id:authorisedSystemInstance.id)}" class="btn btn-small"><i class="icon-edit"></i></a>
                             </td>
                         </tr>
                     </g:each>
@@ -55,16 +55,13 @@
                         <g:paginate total="${authorisedSystemInstanceTotal}" params="${params}" />
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="well">
-                        This is a list of IP address that can access the web services providing user information.
-                        Requests from IP addresses not listed here will get a HTTP 403 Forbidden response.
-                    </div>
+                <div class="span4 well">
+                    <g:message code="authorisedSystem.this_is_a_list_of_ip_addresses" />
                 </div>
             </div>
 		</div>
 	</body>
-    <asset:script type="text/javascript">
+    <r:script>
 
     function doSearch() {
         var query = $("#q").val();
@@ -90,7 +87,7 @@
             var target = $(this); // create a copy of current scope
             if (host) {
                 $.ajax("${createLink(action:'ajaxResolveHostName')}?host=" + host).done(function(results) {
-                    var iconClass= results.reachable ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-warning-sign";
+                    var iconClass= results.reachable ? "icon-ok" : "icon-warning-sign";
                     var tooltip = results.reachable ? "Host is reachable" : "Host is not currently reachable";
                     target.html(results.hostname + "&nbsp;<i title='" + tooltip + "' class='" +  iconClass + "'></i>");
                 });
@@ -99,5 +96,5 @@
 
     });
 
-    </asset:script>
+    </r:script>
 </html>

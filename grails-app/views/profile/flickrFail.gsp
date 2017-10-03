@@ -3,14 +3,13 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>My profile | ${grailsApplication.config.skin.orgNameLong}</title>
+    <title><g:message code="email.flickrFail.title" /></title>
 </head>
 <body>
-<div class="row">
-    <h1>Flickr account link failed</h1>
-    <p class="well text-danger">
-        We were unable to link to your Flickr account.
-        If this problem persists, please email <a href="mailto:${grailsApplication.config.supportEmail}">${grailsApplication.config.supportEmail}</a>
+<div class="row-fluid">
+    <h1><g:message code="email.flickrFail.failed" /></h1>
+    <p class="well text-error">
+        <g:message code="email.flickrFail.we_were_unable_to_link" args="${[grailsApplication.config.supportEmail]}"/>
     </p>
 </div>
 </body>

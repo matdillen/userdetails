@@ -3,15 +3,15 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>Please check your email | ${grailsApplication.config.skin.orgNameLong} </title>
+    <title><g:message code="admin.userPasswordResetSuccess.title" /></title>
 </head>
 <body>
-<div class="row">
-    <h1>User password reset successfully</h1>
-    <div class="row">
-        <div class="col-md-12">
+<div class="row-fluid">
+    <h1><g:message code="admin.userPasswordResetSuccess.title2" /></h1>
+    <div class="row-fluid">
+        <div class="span12">
             <p class="well">
-                The password has been reset for <strong>${email}</strong> and an email has been sent to the user containing the new password.
+                <g:message code="admin.userPasswordResetSuccess.the_password_has_been_reset" args="${[email]}" />
             </p>
         </div>
    </div>

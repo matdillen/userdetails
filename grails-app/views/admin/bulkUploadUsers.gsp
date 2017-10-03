@@ -3,14 +3,14 @@
     <head>
         <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
         <meta name="section" content="home"/>
-        <g:set var="title">Bulk Load Users</g:set>
+        <g:set var="title"><g:message code="admin.bulkLoadUsers.title" /></g:set>
         <title>${title} | ${grailsApplication.config.skin.orgNameLong}</title>
     </head>
     <body>
         <div class="nav" role="navigation">
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><a href="${createLink(controller:'admin', action:'index')}"><i class="glyphicon glyphicon-wrench"></i>&nbsp;Administration</a></li>
+                <li><a href="${createLink(controller:'admin', action:'index')}"><i class="icon-wrench"></i>&nbsp;<g:message code="admin.bulkLoadUsers.administration" /></a></li>
             </ul>
         </div>
 
@@ -20,11 +20,11 @@
             </div>
         </g:if>
 
-        <div class="row">
-            <div class="col-md-12" id="page-body" role="main">
-                <h1>Bulk Load Users</h1>
+        <div class="row-fluid">
+            <div class="span12" id="page-body" role="main">
+                <h1><g:message code="admin.bulkLoadUsers.title" /></h1>
                 <p>
-                Choose a CSV file to load. The file should be in the following format:
+                    <g:message code="admin.bulkLoadUsers.choose_a_csv_file" />
                 </p>
                 <p>
                     <code>
@@ -32,74 +32,71 @@
                     </code>
                 </p>
                 <p>
-                Where <code>roles</code> is an optional space separated list of the roles that the user should have.
+                    <g:message code="admin.bulkLoadUsers.where_roles_is_an_optional" />
                 </p>
                 <p>
-                    <em>Note:</em> If an email address in the file already exists in the database then that user will not be created, but any missing roles will be added to the existing account.
+                    <g:message code="admin.bulkLoadUsers.note_if_an_email_already_exists" />
                 </p>
             </div>
         </div>
         <g:form action="loadUsersCSV" method="post" enctype="multipart/form-data" class="form-horizontal well well-small">
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+            <div class="control-group">
+                <div class="controls">
                     <input type="file" name="userList" />
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <div class="checkbox">
-                        <label>
-                            <g:checkBox name="firstRowHasFieldNames"/> First row contains field names
-                        </label>
-                    </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox">
+                        <g:checkBox name="firstRowHasFieldNames"/> <g:message code="admin.bulkLoadUsers.first_row_contains" />
+                    </label>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="primaryUsage">
-                    Primary usage (will default to 'Not Supplied')
+            <div class="control-group">
+                <label class="control-label" for="primaryUsage">
+                    <g:message code="admin.bulkLoadUsers.primary_usage" />
                 </label>
 
-                <div class="col-sm-10">
-                    <g:textField class="form-control" name="primaryUsage" />
+                <div class="controls">
+                    <g:textField name="primaryUsage" />
                 </div>
             </div>
 
-            <h4>Password Reset Email</h4>
-            <div class="form-group">
-            An email will be sent out to each user created, prompting them to reset their password.
-            You can customize the content of this email by filling out the fields below, or you can leave them blank to use the default wording.
+            <h4><g:message code="admin.bulkLoadUsers.password_reset_email" /></h4>
+            <div class="control-group">
+                <g:message code="admin.bulkLoadUsers.an_email_will_be_sent_to_each_user" />
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="emailSubject">
-                    Subject
+            <div class="control-group">
+                <label class="control-label" for="emailSubject">
+                    <g:message code="admin.bulkLoadUsers.subject" />
                 </label>
-                <div class="col-sm-10">
-                    <g:textField name="emailSubject" class="form-control" />
+                <div class="controls">
+                    <g:textField name="emailSubject" class="input-xlarge" />
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="emailTitle">
-                    Title
+            <div class="control-group">
+                <label class="control-label" for="emailTitle">
+                    <g:message code="admin.bulkLoadUsers.email_title" />
                 </label>
-                <div class="col-sm-10">
-                    <g:textField name="emailTitle" class="form-control"/>
+                <div class="controls">
+                    <g:textField name="emailTitle" class="input-xlarge"/>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="emailBody">
-                    Body
+            <div class="control-group">
+                <label class="control-label" for="emailBody">
+                    <g:message code="admin.bulkLoadUsers.body" />
                 </label>
-                <div class="col-sm-10">
-                    <g:textArea name="emailBody" class="form-control" rows="5"/>
+                <div class="controls">
+                    <g:textArea name="emailBody" class="input-xxlarge" rows="5"/>
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn btn-primary">Upload</button>
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary"><g:message code="admin.bulkLoadUsers.upload" /></button>
                 </div>
             </div>
         </g:form>

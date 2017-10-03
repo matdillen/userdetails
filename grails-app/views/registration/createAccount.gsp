@@ -3,178 +3,158 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
+    <r:require modules="jqueryValidationEngine, autocomplete"/>
     <g:if test="${!alreadyRegistered && edit}">
-        <g:set var="title">Edit your account</g:set>
-        <meta name="breadcrumbParent" content="My Profile,${g.createLink(controller: 'profile')}" />
+        <g:set var="title"><g:message code="registration.createAccount.edit_your_account" /></g:set>
     </g:if>
     <g:else>
-        <g:set var="title">Create your account</g:set>
+        <g:set var="title"><g:message code="registration.createAccount.create_your_account" /></g:set>
     </g:else>
     <title>${title}</title>
     <asset:stylesheet src="createAccount.css" />
 </head>
 <body>
 
-<div class="row">
+<div class="inner row-fluid">
+    <div id="breadcrumb" class="span12">
+        <ol class="breadcrumb">
+            <li><a href="${grailsApplication.config.homeUrl}"><g:message code="registration.createAccount.home" /></a> <span class=" icon icon-arrow-right"></span></li>
+            <g:if test="${edit}">
+                <li><g:link controller="profile"><g:message code="registration.createAccount.my_profile" /></g:link> <span class=" icon icon-arrow-right"></span></li>
+            </g:if>
+            <li class="active">${title}</li>
+        </ol>
+    </div>
+</div>
+
+<div class="row-fluid">
     <h1>${title}</h1>
     <g:if test="${inactiveUser}">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="well">
-                    <p class="text-danger">A user is already registered with the email address <strong>${params.email}</strong> however it is currently disabled.
-                    </p>
+        <div class="row-fluid warning well">
+            <p class="text-error"><g:message code="registration.createAccount.a_user_is_already_registered_but_disabled" args="${[params.email]}"/></p>
 
-                    <p>
-                        If you think this is an error or you disabled your account please contact <a
-                            href="mailto:${grailsApplication.config.supportEmail}">${grailsApplication.config.supportEmail}</a>.
-                    </p>
-                </div>
-            </div>
+            <p>
+                <g:message code="registration.createAccount.if_you_think_this_is_an_error" args="${[grailsApplication.config.supportEmail]}"/>
+            </p>
         </div>
     </g:if>
     <g:elseif test="${alreadyRegistered}">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="well">
-                    <p class="text-danger">A user is already registered with the email address <strong>${params.email}</strong>.</p>
+        <div class="row-fluid warning well">
+            <p class="text-error"><g:message code="registration.createAccount.a_user_is_already_registered" args="${params.email}" /></p>
 
-                    <p>
-                        To login with this user name, <a
-                            href="${grailsApplication.config.security.cas.loginUrl}">click here</a>.<br/>
-                        To start the process of resetting your password, <g:link controller="registration"
-                                                                                 action="forgottenPassword"
-                                                                                 params="${[email: params.email]}">click here</g:link>.
-                    </p>
-                </div>
-            </div>
+            <p>
+                <g:message code="registration.createAccount.to_login_with_this_username" args="${[grailsApplication.config.security.cas.loginUrl]}"/><br/>
+                <g:message code="registration.createAccount.to_start_the_process_of_resetting_your_password" /><g:link controller="registration" action="forgottenPassword" params="${[email: params.email]}"><g:message code="registration.createAccount.to_start_the_process_of_resetting_your_password.click_here" /></g:link>.
+            </p>
         </div>
     </g:elseif>
 
-    <div class="row">
-        <div class="col-md-8 col-md-push-4">
-            <div class="well">
-                <g:if test="${!edit}">
-                    <p>
-                        To create your new account, fill in the fields opposite and click "Create".
-                    </p>
-                </g:if>
-                <p>
-                    In the Primary and Secondary Usage fields you can enter your own text to describe your
-                    intended usage of the site. Examples include: "Amateur naturalist", "Photographer", "Ecologist".
-                </p>
-                <p>
-                    For the Atlas' policy on the collection and use of personal information see our
-                    <a href="${grailsApplication.config.privacyPolicy}">Privacy Policy</a>.
-                </p>
-                <p>
-                    Your email address will be your ALA account login.
-                    <g:if test="${!edit}">
-                        An &quot;account activation&quot; link will be
-                        emailed to the address provided. You need click this link, in order to complete the
-                        registration process. Note, you may need to check you spam/junk mail folder, as activation emails
-                        sometimes get caught by mail filters.
-                    </g:if>
-                </p>
-            </div>
-        </div>
-        <div class="col-md-4 col-md-pull-8">
+    <div class="row-fluid">
+        <div class="span4">
             <div>
             <g:form name="updateAccountForm" method="POST" action="${edit ? 'update' : 'register'}" controller="registration" useToken="true" onsubmit="updateAccountSubmit.disabled = true; return true;">
-                <div class="form-group">
-                    <label for="firstName">First name</label>
-                    <input id="firstName" name="firstName" type="text" class="form-control" value="${user?.firstName}" data-validation-engine="validate[required]"/>
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Last name</label>
-                    <input id="lastName" name="lastName" type="text" class="form-control" value="${user?.lastName}"  data-validation-engine="validate[required]"/>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input id="email" name="email" type="text" class="form-control" value="${user?.email}"
-                           data-validation-engine="validate[required,custom[email]]"
-                           data-errormessage-value-missing="Email is required!"
-                    />
-                </div>
 
-                <g:if test="${!edit}">
-                    <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="firstName"><g:message code="registration.createAccount.first_name" /></label>
+                    <input id="firstName" name="firstName" type="text" class="input-xlarge" value="${user?.firstName}" data-validation-engine="validate[required]"/>
+
+                    <label for="lastName"><g:message code="registration.createAccount.last_name" /></label>
+                    <input id="lastName" name="lastName" type="text" class="input-xlarge" value="${user?.lastName}"  data-validation-engine="validate[required]"/>
+
+
+                    <label for="email"><g:message code="registration.createAccount.email_address" /></label>
+                    <input id="email" name="email" type="text" class="input-xlarge" value="${user?.email}"
+                           data-validation-engine="validate[required,custom[email]]"
+                           data-errormessage-value-missing="${message(code: "registration.createAccount.email_is_required")}"
+                    />
+
+                    <g:if test="${!edit}">
+                    <label for="password"><g:message code="registration.createAccount.password" /></label>
                     <input id="password"
                            name="password"
-                           class="form-control"
+                           class="input-xlarge"
                            value=""
                            data-validation-engine="validate[required, minSize[8]]"
-                           data-errormessage-value-missing="Password is required!"
+                           data-errormessage-value-missing="${message(code: "registration.createAccount.password_is_required")}"
                            type="password"
                     />
-                    </div>
-                    <div class="form-group">
-                    <label for="reenteredPassword">Reentered password</label>
+
+                    <label for="reenteredPassword"><g:message code="registration.createAccount.reentered_password" /></label>
                     <input id="reenteredPassword"
                            name="reenteredPassword"
-                           class="form-control"
+                           class="input-xlarge"
                            value=""
                            data-validation-engine="validate[required, minSize[8]]"
-                           data-errormessage-value-missing="Password is required!"
+                           data-errormessage-value-missing="${message(code: "registration.createAccount.password_is_required")}"
                            type="password"
                     />
-                    </div>
-                </g:if>
-                <div class="form-group">
-                    <label for="organisation">Organisation</label>
-                    <input id="organisation" name="organisation" type="text" class="form-control" value="${props?.organisation}"/>
-                </div>
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input id="city" name="city" type="text" class="form-control" value="${props?.city}" />
-                </div>
-                <div class="form-group">
-                    <label for="state">State/territory</label>
+                    </g:if>
+
+                    <label for="organisation"><g:message code="registration.createAccount.organisation" /></label>
+                    <input id="organisation" name="organisation" type="text" class="input-xlarge" value="${props?.organisation}"/>
+
+                    <label for="city"><g:message code="registration.createAccount.city" /></label>
+                    <input id="city" name="city" type="text" class="input-xlarge" value="${props?.city}" />
+<%--
+                    <label for="state"><g:message code="registration.createAccount.state" /></label>
                     <g:select id="state" name="state"
-                              class="form-control"
                               value="${props?.state}"
                               keys="['N/A', 'ACT', 'NSW', 'WA', 'VIC', 'SA', 'TAS', 'NT', 'QLD']"
                               from="['N/A', 'Australian Capital Territory', 'New South Wales',
                                       'Western Australia', 'Victoria', 'South Australia', 'Tasmania',
                                       'Northern Territory', 'Queensland']"
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="telephone">Telephone</label>
-                    <input id="telephone" name="telephone" type="text" class="form-control" value="${props?.telephone}" />
-                </div>
-                <div class="form-group">
-                    <label for="primaryUserType">Primary usage</label>
-                    <input id="primaryUserType" name="primaryUserType" type="text" class="form-control usageAuto"
+                    />--%>
+
+                    <label for="telephone"><g:message code="registration.createAccount.telephone" /></label>
+                    <input id="telephone" name="telephone" type="text" class="input-xlarge" value="${props?.telephone}" />
+
+                <%--
+                    <label for="primaryUserType"><g:message code="registration.createAccount.primary_usage" /></label>
+                    <input id="primaryUserType" name="primaryUserType" type="text" class="input-xlarge usageAuto"
                            value="${props?.primaryUserType?:''}"
                            data-validation-engine="validate[required]"
                     />
-                </div>
-                <div class="form-group">
-                    <label for="secondaryUserType">Secondary usage</label>
-                    <input id="secondaryUserType" name="secondaryUserType" type="text"  class="form-control usageAuto"
+
+                    <label for="secondaryUserType"><g:message code="registration.createAccount.secondary_usage" /></label>
+                    <input id="secondaryUserType" name="secondaryUserType" type="text"  class="input-xlarge usageAuto"
                            value="${props?.secondaryUserType?:''}"
                            data-validation-engine="validate[required]"
-                    />
-                </div>
+                    />--%>
+                <br/>
                 <g:if test="${edit}">
-                    <button id="updateAccountSubmit" class="btn btn-primary">Update account</button>
-                    <button id="disableAccountSubmit" class="btn btn-primary delete">Disable account</button>
+                    <button id="updateAccountSubmit" class="btn btn-ala"><g:message code="registration.createAccount.update_account" /></button>
+                    <button id="disableAccountSubmit" class="btn btn-ala delete"><g:message code="registration.createAccount.disable_account" /></button>
                 </g:if>
                 <g:else>
-                    <button id="updateAccountSubmit" class="btn btn-primary">Create account</button>
+                    <button id="updateAccountSubmit" class="btn btn-ala"><g:message code="registration.createAccount.create_account" /></button>
                 </g:else>
             </g:form>
             </div>
             <g:if test="${flash.invalidToken}">
-                Please don't click the button twice.
+                <g:message code="registration.createAccount.please_dont_click_twice" />
             </g:if>
+        </div>
+        <div class="span8 well">
+            <g:if test="${!edit}">
+                <p>
+                    <g:message code="registration.createAccount.to_create_your_new_account_fill_in_the_fields" />
+                </p>
+            </g:if>
+            <p><g:message code="registration.createAccount.in_the_primary_and_secondary_usage_fields_you_can" />
+
+            </p>
+            <p><g:message code="registration.createAccount.for_the_atlas_policy_on_the_collection" args="${[grailsApplication.config.privacyPolicy]}"/>
+            </p>
+            <p>
+                <g:message code="registration.createAccount.your_email_address_will_be_your_login" />
+                <g:if test="${!edit}">
+                    <g:message code="registration.createAccount.an_account_activation_link_will_be_emailed" />
+                </g:if>
+            </p>
         </div>
    </div>
 </div>
 </body>
-<asset:javascript src="createAccount.js" asset-defer="" />
-<asset:script type="text/javascript">
+<r:script>
     $(function(){
 
         //$('.typeahead').typeahead();
@@ -199,7 +179,7 @@
 
             var pm = $('#password').val() == $('#reenteredPassword').val();
             if(!pm){
-                alert("The supplied passwords do not match!");
+                alert("${message(code: "registration.createAccount.the_supplied_password_do_not_match")}");
             }
 
             var valid = $('#updateAccountForm').validationEngine('validate');
@@ -231,5 +211,5 @@
 
 
     });
-</asset:script>
+</r:script>
 </html>

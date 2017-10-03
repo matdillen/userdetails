@@ -1,17 +1,17 @@
 <%@ page contentType="text/html"%>
 <html>
-  <head><title>Accessing your account</title></head>
+  <head><title><g:message code="email.accessAcount.title" /></title></head>
   <body>
-    <h1>Accessing your account</h1>
+    <h1>><g:message code="email.accessAcount.title" /></h1>
     <p>
-        Below is a generated password you can use to log into your account.
-        It is recommended that you reset your password.
+        ><g:message code="email.accessAcount.below_is_a_generated_password" />
     </p>
     <p>
       ${generatedPassword}
     </p>
     <p>
-       To login, <a href="${link}">click here</a>.
+        <g:message code="email.accessAcount.click_here" args="${[link]}" />
+
     </p>
   </body>
 </html>

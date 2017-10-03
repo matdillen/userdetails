@@ -3,31 +3,30 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <meta name="breadcrumb" content="My Profile" />
-    <title>My profile | ${grailsApplication.config.skin.orgNameLong}</title>
+    <title><g:message code="myprofile.title" /> | ${grailsApplication.config.skin.orgNameLong}</title>
 </head>
 <body>
 
-%{--<div class="inner row">--}%
-    %{--<div id="breadcrumb" class="col-md-12">--}%
-        %{--<ol class="breadcrumb">--}%
-            %{--<li><a href="${grailsApplication.config.homeUrl}">Home</a></li>--}%
-            %{--<li class="active">My profile</li>--}%
-        %{--</ol>--}%
-    %{--</div>--}%
-%{--</div>--}%
+<div class="inner row-fluid">
+    <div id="breadcrumb" class="span12">
+        <ol class="breadcrumb">
+            <li><a href="${grailsApplication.config.homeUrl}"><g:message code="myprofile.home" /></a> <span class=" icon icon-arrow-right"></span></li>
+            <li class="active"><g:message code="myprofile.my_profile" /></li>
+        </ol>
+    </div>
+</div>
 
-<div class="row">
-    <h1>Hello ${user.firstName} !</h1>
-    <div class="row">
-        <div class="col-md-6">
+<div class="row-fluid">
+    <h1><g:message code="myprofile.hello" /> ${user.firstName} !</h1>
+    <div class="row-fluid">
+        <div class="span6">
             <ul>
                 <li>
                     <g:link controller="registration" action="editAccount">
-                         Update your profile
+                        <g:message code="myprofile.update_your_profile" />
                     </g:link>
                 </li>
-                <li>
+<!--                <li>
                     <a href="${grailsApplication.config.sightings.url}">
                          View your timeline of sightings recorded through the Atlas
                     </a>
@@ -36,13 +35,13 @@
                     <a href="${grailsApplication.config.spatial.url}">
                         Tabulate and graph all functions you've used in the Spatial Portal
                     </a>
-                </li>
+                </li>-->
                 <li>
                     <a href="${grailsApplication.config.volunteer.url}">
-                        View your tasks on the DigiVol Portal
+                        <g:message code="myprofile.view_your_tasks_on_the_portal" />
                     </a>
                 </li>
-                <li>
+<!--                <li>
                     <a href="${grailsApplication.config.lists.url}">
                         View your uploaded species lists
                     </a>
@@ -56,26 +55,26 @@
                     <a href="${grailsApplication.config.alerts.url}">
                         Manage your alerts
                     </a>
-                </li>
+                </li>-->
                 <li>
                     <g:link controller="registration" action="forgottenPassword">
-                        Reset my password
+                        <g:message code="myprofile.reset_my_password" />
                     </g:link>
                 </li>
 
                 <g:if test="${isAdmin}">
                 <li>
                     <g:link controller="admin">
-                        Admin tools
+                        <g:message code="myprofile.admin_tools" />
                     </g:link>
                 </li>
                 </g:if>
             </ul>
-
+<!--
             <h3>External site linkages</h3>
             <div class="well well-small">
                 <h4>Flickr</h4>
-                <g:if test="${props.flickrUsername}">
+                g:if test="${props.flickrUsername}">
                     <strong>You have connected to flickr account with username:
                         <a href="http://www.flickr.com/photos/${props.flickrId}">${props.flickrUsername}</a>.
                     </strong>
@@ -89,19 +88,19 @@
 
 
 
-                    <g:link controller="profile" class="btn btn-default" action="removeFlickrLink" target="_blank">Remove link to flickr account</g:link>
-                </g:if>
-                <g:else>
+                    g:link controller="profile" class="btn" action="removeFlickrLink" target="_blank">Remove link to flickr account/g:link>
+                /g:if>
+                g:else>
                     <p>
                     Linking with Flick enables images shared through Flickr to be linked to your Atlas account
                     so they can be attributed to you.
                     </p>
 
-                    <span class="btn btn-default">
-                        <oauth:connect provider="flickr">Link to my Flickr account</oauth:connect>
+                    <span class="btn">
+                        oauth:connect provider="flickr">Link to my Flickr account/oauth:connect>
                     </span>
-                </g:else>
-            </div>
+                /g:else>
+            </div>-->
         </div>
    </div>
 </div>

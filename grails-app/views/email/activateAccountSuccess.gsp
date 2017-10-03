@@ -1,15 +1,15 @@
 <%@ page contentType="text/html"%>
 <html>
-<head><title>Your account has been successfully activated</title></head>
+<head><title><g:message code="email.activateAccountSuccess.title" /></title></head>
 <body>
-<h1>Your account has been successfully activated</h1>
+<h1><g:message code="email.activateAccountSuccess.title" /></h1>
 <p>
-    You are now automatically subscribed to the following alerts:
+    <g:message code="email.activateAccountSuccess.you_are_now_subscribed" />
 
     ${activatedAlerts}
 </p>
 <p>
-    Please visit <a href="${alertsUrl}/notification/myAlerts">My Alerts</a> to modify your alert configurations.
+    <g:message code="email.activateAccountSuccess.please_visit" args="${[grailsApplication.config.alerts.url+'/notification/myAlerts']}" />
 </p>
 </body>
 </html>

@@ -3,17 +3,15 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>Please check your email</title>
+    <title><g:message code="registration.startPasswordReset.please_check_your_email" /></title>
 </head>
 <body>
-<div class="row">
-    <h1>Please check your email</h1>
-    <div class="row">
-        <div class="col-md-12">
+<div class="row-fluid">
+    <h1><g:message code="registration.startPasswordReset.please_check_your_email" /></h1>
+    <div class="row-fluid">
+        <div class="span12">
             <p class="well">
-                We have sent you an email with a link to reset your password.
-                <br/>
-                Please click the link in the email to start the process of providing a new password.
+                <g:message code="registration.startPasswordReset.we_have_sent_you_an_email" />
             </p>
         </div>
    </div>

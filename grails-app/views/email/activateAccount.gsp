@@ -1,10 +1,11 @@
 <%@ page contentType="text/html"%>
 <html>
-  <head><title>Activate your account</title></head>
+  <head><title><g:message code="email.activateAccount.title" /></title></head>
   <body>
-    <h1>Activate your account</h1>
+    <h1><g:message code="email.activateAccount.title" /></h1>
     <p>
-        Please click the link below to activate your ${orgNameLong} account.
+        <g:message code="email.activateAccount.please_click_below" />
+
     </p>
     <p>
        <a href="${link}">${link}</a>

@@ -14,22 +14,22 @@
 <div class="nav" role="navigation">
     <ul>
         <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-        <li><a href="${createLink(controller:'admin', action:'index')}"><i class="glyphicon glyphicon-wrench"></i>&nbsp;Administration</a></li>
+        <li><a href="${createLink(controller:'admin', action:'index')}"><i class="icon-wrench"></i>&nbsp;<g:message code="admin.bulkLoadUsers.administration" /></a></li>
         <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]"/></g:link></li>
     </ul>
 </div>
 
 <div id="list-user" class="content scaffold-list" role="main">
 
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row-fluid">
+        <div class="span6">
             <h1><g:message code="default.list.label" args="[entityName]"/></h1>
         </div>
-        <div class="col-md-6">
+        <div class="span6">
             <g:form action="list" controller="user" method="get">
                 <div class="input-append pull-right">
-                    <input type="text" class="form-control" name="q" value="${q?:''}" placeholder="Search for user"/>
-                    <input type="submit" class="btn btn-default"/>
+                    <input type="text" class="input-xlarge" name="q" value="${q?:''}" placeholder="${message(code:"user.list.search_for_user")}"/>
+                    <input type="submit" class="btn"/>
                 </div>
             </g:form>
         </div>
@@ -39,7 +39,7 @@
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
-    <table class="table">
+    <table>
         <thead>
         <tr>
             <g:sortableColumn property="id" title="${message(code: 'user.id.label', default: 'ID')}"/>

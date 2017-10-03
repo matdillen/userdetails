@@ -15,7 +15,7 @@
 			</ul>
 		</div>
 		<div id="create-userRole" class="content scaffold-create" role="main">
-			<h1>Add role for ${user}</h1>
+			<h1><g:message code="userRole.create.add_role_for_x" args="${[user]}" /></h1>
 			<g:form action="addRole" >
 				<fieldset class="form">
 					<input type="hidden" id="userId" name="userId" value="${user.id}"/>

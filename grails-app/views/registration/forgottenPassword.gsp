@@ -3,48 +3,42 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>Reset my password</title>
+    <title><g:message code="registration.forgottenPassword.title" /></title>
 </head>
 <body>
 
-<div class="row">
-    <h1>Reset my password</h1>
-    <div class="row">
-        <div class="col-md-6">
+<div class="row-fluid">
+    <h1><g:message code="registration.forgottenPassword.reset_my_password" /></h1>
+    <div class="row-fluid">
+        <div class="span6">
 
             <g:if test="${captchaInvalid}">
-            <p class="well text-danger">
-                Your input did not match the text in the image. Please try again.
+            <p class="well text-error">
+                <g:message code="registration.forgottenPassword.your_input_did_not_match" />
             </p>
             </g:if>
             <g:if test="${invalidEmail}">
-            <p class="well text-danger">
-                We don't recognise that email address.
+            <p class="well text-error">
+                <g:message code="registration.forgottenPassword.we_dont_recognize_that_email" />
             </p>
             </g:if>
 
             <g:form action="startPasswordReset" method="POST" onsubmit="submitResetBtn.disabled = true; return true;">
-                <div class="form-group">
-                    <label for="email">Your email address</label>
-                    <input id="email" name="email" type="text" class="form-control" value="${params.email ?: email}"/>
-                </div>
+                <label for="email"><g:message code="registration.forgottenPassword.your_email_address" /></label>
+                <input id="email" name="email" type="text" class="input-xlarge" value="${params.email ?: email}"/>
+                <br/>
 
                 <img src="${createLink(controller: 'simpleCaptcha', action: 'captcha')}"/>
-                <div class="form-group">
-                    <label for="captcha">Type the letters above in the box below:</label>
-                    <g:textField name="captcha" class="form-control"/>
-                </div>
+                <label for="captcha"><g:message code="registration.forgottenPassword.type_the_letters_above" /></label>
+                <g:textField name="captcha"/>
 
                 <br/>
-                <g:submitButton id="submitResetBtn" class="btn btn-primary" name="submit" value="Send Password Reset Link"/>
+                <g:submitButton id="submitResetBtn" class="btn btn-ala" name="submit" value="Send Password Reset Link"/>
             </g:form>
         </div>
-        <div class="col-md-6">
+        <div class="span6">
             <p class="well">
-                When you click the Send Password Reset Link button, a one-time link will be emailed to your
-                registered email address, allowing you to enter a new password.
-                <br/>
-                The link will be valid for 48 hours.
+                <g:message code="registration.forgottenPassword.when_you_click_the_send" />
             </p>
         </div>
 

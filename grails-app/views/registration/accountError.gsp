@@ -3,17 +3,16 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>ALA Account Error</title>
+    <title><g:message code="registration.accountError.title" /></title>
 </head>
 <body>
-<div class="row">
-    <h1>Account Error</h1>
-    <div class="row">
+<div class="row-fluid">
+    <h1><g:message code="registration.accountError.title" /></h1>
+    <div class="row-fluid">
         <p>
-            There was problem creating or updating your account.<br>
-            Please contact <a href="mailto:${grailsApplication.config.supportEmail}">${grailsApplication.config.supportEmail}</a>
+            <g:message code="registration.accountError.description" args="${[grailsApplication.config.supportEmail]}" />
         </p>
-        <g:if test="${msg}"><p><h4>Error:</h4> <pre>${msg}</pre></p></g:if>
+        <g:if test="${msg}"><p><h4><g:message code="registration.accountError.error" />:</h4> <pre>${msg}</pre></p></g:if>
    </div>
 </div>
 </body>

@@ -29,7 +29,7 @@
 					
 						<g:sortableColumn property="description" title="${message(code: 'role.description.label', default: 'Description')}" />
 
-                        <th>Actions</th>
+                        <th><g:message code="role.actions" /></th>
 					
 					</tr>
 				</thead>
@@ -41,7 +41,7 @@
 					
 						<td>${fieldValue(bean: roleInstance, field: "description")}</td>
 
-                        <td><a href="${createLink(controller: 'userRole', action:'list', params:[role:roleInstance.role])}">View users</a></td>
+                        <td><a href="${createLink(controller: 'userRole', action:'list', params:[role:roleInstance.role])}"><g:message code="role.view_users" /></a></td>
 					</tr>
 				</g:each>
 				</tbody>

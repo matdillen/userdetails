@@ -7,7 +7,7 @@
         ${emailBody}
     </p>
     <g:if test="${password}">
-        Your generated password is <strong>${password}</strong>. If you would like to change it, click the link below.
+        <g:message code="email.resetPassword.your_password_is" args="${[password]}" />
     </g:if>
     <p>
        <a href="${link}">${link}</a>

@@ -3,19 +3,17 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>Account created | ${grailsApplication.config.skin.orgNameLong}</title>
+    <title><g:message code="registration.accountActivatedSuccessful.account_created" /> | ${grailsApplication.config.skin.orgNameLong}</title>
 </head>
 <body>
-<div class="row">
+<div class="row-fluid">
     <h1>
-        Congratulations! Your account has been activated successfully.
+        <g:message code="registration.accountActivatedSuccessful.congratulations" />
     </h1>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="well well-lg">
-                Please login in order to access <a href="${grailsApplication.config.security.cas.loginUrl}?email=${user.email}&service=${grailsApplication.config.redirectAfterFirstLogin}">My Profile</a>.
-            </div>
+    <div class="row-fluid">
+        <div class="span12 well well-large">
+            <g:message code="registration.accountActivatedSuccessful.please_login_to_access" /> <a href="${grailsApplication.config.security.cas.loginUrl}?email=${user.email}&service=${grailsApplication.config.redirectAfterFirstLogin}"><g:message code="registration.accountActivatedSuccessful.please_login_to_access.my_profile" /></a>.
         </div>
     </div>
 </div>

@@ -3,15 +3,15 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="section" content="home"/>
-    <title>Account disabled</title>
+    <title><g:message code="registration.accountDisabled.account_disabled" /></title>
 </head>
 <body>
-<div class="row">
-    <h1>Account disabled successfully</h1>
-    <div class="row">
-        <div class="col-md-12">
+<div class="row-fluid">
+    <h1><g:message code="registration.accountDisabled.account_disabled_sucessful" /></h1>
+    <div class="row-fluid">
+        <div class="span12">
             <p class="well">
-                Your account has been disabled. You no longer have access to the system.
+                <g:message code="registration.accountDisabled.account_disabled.description" />
             </p>
         </div>
    </div>
