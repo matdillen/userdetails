@@ -6,6 +6,9 @@
     <title><g:message code="admin.index.title" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
     <div class="row">
         <div class="col-md-12" id="page-body" role="main">
             <h1><g:message code="admin.index.title" /></h1>

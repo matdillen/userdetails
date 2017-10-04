@@ -8,6 +8,9 @@
 </head>
 
 <body>
+
+<g:render template="/layouts/header" />
+
 <a href="#edit-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                            default="Skip to content&hellip;"/></a>
 

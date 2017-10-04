@@ -6,6 +6,9 @@
     <title><g:message code="registration.accountActivated.account_created" /> | ${grailsApplication.config.skin.orgNameLong}</title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <div class="row-fluid">
     <h1>
         <g:message code="registration.accountActivated.please_check_your_email" />

@@ -6,6 +6,9 @@
     <title><g:message code="registration.duplicateSubmit.title" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <div class="row-fluid">
     <h1><g:message code="registration.duplicateSubmit.results_of_resetting_your_password" /></h1>
     <div class="row-fluid">

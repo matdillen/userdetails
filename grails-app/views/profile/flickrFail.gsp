@@ -6,6 +6,9 @@
     <title><g:message code="email.flickrFail.title" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <div class="row-fluid">
     <h1><g:message code="email.flickrFail.failed" /></h1>
     <p class="well text-error">

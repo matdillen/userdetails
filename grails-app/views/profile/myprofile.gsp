@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<g:render template="/layouts/header" />
+
 <div class="inner row-fluid">
     <div id="breadcrumb" class="span12">
         <ol class="breadcrumb">

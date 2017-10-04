@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<g:render template="/layouts/header" />
+
 <div class="row-fluid">
     <h1><g:message code="registration.forgottenPassword.reset_my_password" /></h1>
     <div class="row-fluid">

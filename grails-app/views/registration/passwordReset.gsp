@@ -6,6 +6,9 @@
     <title><g:message code="registration.passwordReset.title" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <asset:script type="text/javascript">
     $(function(){
         // Used to prevent double clicks from submitting the form twice.  Doing so will result in a confusing

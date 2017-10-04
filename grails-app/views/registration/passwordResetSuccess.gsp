@@ -6,6 +6,9 @@
     <title><g:message code="registration.passwordResetSuccess.title" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <div class="row-fluid">
     <h1><g:message code="registration.passwordResetSuccess.password_reset_successfully" /></h1>
     <div class="row-fluid">

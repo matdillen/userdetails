@@ -6,6 +6,9 @@
     <title><g:message code="registration.startPasswordReset.please_check_your_email" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <div class="row-fluid">
     <h1><g:message code="registration.startPasswordReset.please_check_your_email" /></h1>
     <div class="row-fluid">

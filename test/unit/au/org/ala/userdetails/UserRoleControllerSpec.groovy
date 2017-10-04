@@ -9,7 +9,7 @@ import org.apache.http.HttpStatus
  * Specification for the UserRoleController
  */
 @TestFor(UserRoleController)
-@Mock([RoleBasedFilters, AuthorisedSystemService, User, Role, UserRole, UserProperty])
+@Mock([AuthorisedSystemService, User, Role, UserRole, UserProperty])
 class UserRoleControllerSpec extends UserDetailsSpec {
 
     private User user

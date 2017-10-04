@@ -6,6 +6,9 @@
     <title><g:message code="registration.accountCreated.account_created" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <div class="row-fluid">
     <h1>
         <g:message code="registration.accountCreated.please_check_your_email" />

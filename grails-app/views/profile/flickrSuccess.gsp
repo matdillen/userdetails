@@ -6,6 +6,9 @@
     <title><g:message code="email.flickSuccess.title" /></title>
 </head>
 <body>
+
+<g:render template="/layouts/header" />
+
 <div class="row">
     <h1><g:message code="email.flickSuccess.success" /></h1>
     <table class="table">
