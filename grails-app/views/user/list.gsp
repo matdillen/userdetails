@@ -10,7 +10,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <a href="#list-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                            default="Skip to content&hellip;"/></a>
 
@@ -94,6 +94,7 @@
         <g:paginate total="${userInstanceTotal}" params="[q:q]"/>
     </div>
     </g:if>
+</div>
 </div>
 </body>
 </html>

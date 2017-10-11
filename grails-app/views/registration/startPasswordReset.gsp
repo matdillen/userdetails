@@ -8,7 +8,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <div class="row-fluid">
     <h1><g:message code="registration.startPasswordReset.please_check_your_email" /></h1>
     <div class="row-fluid">
@@ -18,6 +18,7 @@
             </p>
         </div>
    </div>
+</div>
 </div>
 </body>
 </html>

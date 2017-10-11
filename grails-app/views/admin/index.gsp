@@ -9,6 +9,7 @@
 
 <g:render template="/layouts/header" />
 
+<div class="container" id="main">
     <div class="row">
         <div class="col-md-12" id="page-body" role="main">
             <h1><g:message code="admin.index.title" /></h1>
@@ -63,5 +64,6 @@
             </ul>
         </div>
     </div>
+</div>
 </body>
 </html>

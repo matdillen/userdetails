@@ -9,6 +9,7 @@
 
 <g:render template="/layouts/header" />
 
+<div class="container" id="main">
 <div class="row-fluid">
     <h1><g:message code="admin.resetPasswordForUser.reset_password_for_user" /></h1>
 
@@ -34,6 +35,7 @@
             </p>
         </div>
    </div>
+</div>
 </div>
 </body>
 </html>

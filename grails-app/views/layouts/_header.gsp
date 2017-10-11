@@ -8,7 +8,11 @@
 .selectable {
     cursor: pointer;
 }
-    .hidden { display: none; }
+.hidden { display: none; }
+.container#main, .container-fluid#main {
+    margin-bottom: 4em;
+    padding: 2em;
+}
 </style>
 
 
@@ -23,7 +27,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="${grailsApplication.config.ala.baseURL}">
-                <img alt="DoeDat" class="brand img-responsive" src="assets/doedat/logoDoeDatInverted.png">
+                <img alt="DoeDat" class="brand img-responsive" src="/userdetails/assets/doedat/logoDoeDatInverted.png">
             </a>
             <div class="nav-collapse collapse">
             <div class="nav-collapse collapse">
@@ -112,5 +116,6 @@
         <!-- /.container -->
     </div>
     <!-- /.navbar-inner -->
+</div>
 </div>
 <!-- /.navbar -->

@@ -10,7 +10,7 @@
 <body>
 
 <g:render template="layouts/header" />
-
+<div class="container" id="main">
 <div class="row">
     <div class="col-md-12" id="page-body" role="main">
 
@@ -34,6 +34,7 @@
     <div style="color:white;" class="pull-right">
         <g:link style="color:#DDDDDD; font-weight:bold;" controller="admin"><g:message code="index.admin_tools" /></g:link>
     </div>
+</div>
 </div>
 </body>
 </html>

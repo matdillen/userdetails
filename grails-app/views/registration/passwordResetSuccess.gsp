@@ -8,7 +8,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <div class="row-fluid">
     <h1><g:message code="registration.passwordResetSuccess.password_reset_successfully" /></h1>
     <div class="row-fluid">
@@ -19,6 +19,7 @@
             <a href="${grailsApplication.config.security.cas.loginUrl}?service=${java.net.URLEncoder.encode(serverUrl, 'UTF-8')}" class="btn bt-ala"><g:message code="registration.passwordResetSuccess.login" /></a>
         </div>
    </div>
+</div>
 </div>
 </body>
 </html>

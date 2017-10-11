@@ -156,7 +156,7 @@ def loggingDir = (System.getProperty('catalina.base') ? System.getProperty('cata
 log4j = {
 // Example of changing the log pattern for the default console
 // appender:
-    appenders {
+    /*appenders {
         environments {
             production {
                 String logFilename = "${loggingDir}/${appName}.log"
@@ -164,7 +164,7 @@ log4j = {
                 rollingFile name: "tomcatLog", maxFileSize: '1MB', file: "${logFilename}", threshold: org.apache.log4j.Level.WARN, layout: pattern(conversionPattern: "%d %-5p [%c{1}] %m%n")
             }
             development {
-                console name: "stdout", layout: pattern(conversionPattern: "%d %-5p [%c{1}] %m%n"), threshold: org.apache.log4j.Level.DEBUG
+                console name: "stdout", layout: pattern(conversionPattern: "%d %-5p [%c{1}] %m%n"), threshold: org.apache.log4j.Level.TRACE
             }
             test {
                 String logFilename = "/tmp/${appName}"
@@ -178,9 +178,9 @@ log4j = {
         error 'tomcatLog'
         warn 'tomcatLog'
         additivity = true
-    }
+    }*/
 
-    error   'grails.spring.BeanBuilder',
+/*    error   'grails.spring.BeanBuilder',
             'grails.plugin.webxml',
             'grails.plugin.cache.web.filter',
             'grails.app.services.org.grails.plugin.resource',
@@ -189,7 +189,7 @@ log4j = {
 
     warn   'au.org.ala.cas.client'
 
-    debug   'grails.app','au.org.ala.cas','au.org.ala.userdetails'
+    debug   'grails.app','au.org.ala.cas','au.org.ala.userdetails'*/
 }
 
 // these placeholder values are overridden at runtime using the external configuration properties file

@@ -8,7 +8,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <div class="row-fluid">
     <h1>
         <g:message code="registration.accountCreated.please_check_your_email" />
@@ -19,6 +19,7 @@
             <g:message code="registration.accountCreated.account_created.description" args="${[grailsApplication.config.supportEmail]}" />
         </div>
    </div>
+</div>
 </div>
 </body>
 </html>

@@ -34,7 +34,7 @@
         });
     });
 </asset:script>
-
+<div class="container" id="main">
 <div class="row">
     <h1>Please supply your new password</h1>
 
@@ -65,6 +65,7 @@
             <button id="submitResetBtn" class="btn btn-primary">Set my password</button>
         </g:form>
    </div>
+</div>
 </div>
 </body>
 </html>

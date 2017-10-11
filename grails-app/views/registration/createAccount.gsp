@@ -16,7 +16,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <div class="inner row-fluid">
     <div id="breadcrumb" class="span12">
         <ol class="breadcrumb">
@@ -154,6 +154,7 @@
             </p>
         </div>
    </div>
+</div>
 </div>
 </body>
 <r:script>

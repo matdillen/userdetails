@@ -10,7 +10,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <a href="#edit-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                            default="Skip to content&hellip;"/></a>
 
@@ -51,6 +51,7 @@
                             onclick="return confirm('${message(code: 'default.button.delete.user.confirm.message', default: 'Are you sure want to delete this user? This may have serious implications if the user has used systems. Their information may need to be purged from other systems.')}');"/>
         </fieldset>
     </g:form>
+</div>
 </div>
 </body>
 </html>

@@ -11,6 +11,7 @@
 
 <g:render template="/layouts/header" />
 
+<div class="container" id="main">
 <a href="#show-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                            default="Skip to content&hellip;"/></a>
 
@@ -167,6 +168,7 @@
                             %{--onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>--}%
         </fieldset>
     </g:form>
+</div>
 </div>
 </body>
 </html>

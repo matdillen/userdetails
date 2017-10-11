@@ -8,7 +8,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <div class="row-fluid">
     <h1><g:message code="registration.accountError.title" /></h1>
     <div class="row-fluid">
@@ -17,6 +17,7 @@
         </p>
         <g:if test="${msg}"><p><h4><g:message code="registration.accountError.error" />:</h4> <pre>${msg}</pre></p></g:if>
    </div>
+</div>
 </div>
 </body>
 </html>

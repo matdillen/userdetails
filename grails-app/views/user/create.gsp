@@ -10,7 +10,7 @@
 <body>
 
 <g:render template="/layouts/header" />
-
+<div class="container" id="main">
 <a href="#create-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                              default="Skip to content&hellip;"/></a>
 
@@ -43,6 +43,7 @@
                             value="${message(code: 'default.button.create.label', default: 'Create')}"/>
         </fieldset>
     </g:form>
+</div>
 </div>
 </body>
 </html>

@@ -22,7 +22,7 @@
 	<body>
 
     <g:render template="/layouts/header" />
-
+    <div class="container" id="main">
 		<a href="#create-role" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
@@ -56,5 +56,6 @@
 			</g:form>
             </div>
 		</div>
+    </div>
 	</body>
 </html>
