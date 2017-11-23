@@ -86,15 +86,15 @@
                 <ul class="nav pull-right">
                     <li class="dropdown font-xsmall">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            User settings
+                            <g:message code="header.user_settings" />
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"":"hidden"}"><a href="/userdetails/myprofile">My profile</a></li>
+                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"":"hidden"}"><a href="/userdetails/myprofile"><g:message code="header.my_profile" /></a></li>
                             <li class="divider"></li>
-                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"hidden":""}"><a href="/userdetails/myprofile">Login</a></li>
-                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"hidden":""}"><a href="/userdetails/registration/createAccount">Register</a></li>
-                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"":"hidden"}"><a href="${grailsApplication.config.security.cas.logoutUrl}">Logout</a></li>
+                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"hidden":""}"><a href="/userdetails/myprofile"><g:message code="header.login" /></a></li>
+                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"hidden":""}"><a href="/userdetails/registration/createAccount"><g:message code="header.register" /></a></li>
+                            <li class="${AuthenticationCookieUtils.cookieExists(request, AuthenticationCookieUtils.ALA_AUTH_COOKIE)?"":"hidden"}"><a href="${grailsApplication.config.security.cas.logoutUrl}"><g:message code="header.logout" /></a></li>
                         </ul>
                     </li>
 
