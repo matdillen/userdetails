@@ -56,10 +56,16 @@
             <g:form name="updateAccountForm" method="POST" action="${edit ? 'update' : 'register'}" controller="registration" useToken="true" onsubmit="updateAccountSubmit.disabled = true; return true;">
 
                     <label for="firstName"><g:message code="registration.createAccount.first_name" /></label>
-                    <input id="firstName" name="firstName" type="text" class="input-xlarge" value="${user?.firstName}" data-validation-engine="validate[required]"/>
+                    <input id="firstName" name="firstName" type="text" class="input-xlarge" value="${user?.firstName}"
+                           data-validation-engine="validate[required]"
+                           data-errormessage-value-missing="${message(code: "registration.createAccount.mandatory_field")}"
+                    />
 
                     <label for="lastName"><g:message code="registration.createAccount.last_name" /></label>
-                    <input id="lastName" name="lastName" type="text" class="input-xlarge" value="${user?.lastName}"  data-validation-engine="validate[required]"/>
+                    <input id="lastName" name="lastName" type="text" class="input-xlarge" value="${user?.lastName}"
+                           data-validation-engine="validate[required]"
+                           data-errormessage-value-missing="${message(code: "registration.createAccount.mandatory_field")}"
+                    />
 
 
                     <label for="email"><g:message code="registration.createAccount.email_address" /></label>
@@ -177,6 +183,7 @@
         $(".usageAuto").autocomplete(usageOptions, {});
         $('#updateAccountForm').validationEngine('attach', { scroll: false });
         $("#updateAccountSubmit").click(function(e) {
+
 
             $("#updateAccountSubmit").attr('disabled','disabled');
 
