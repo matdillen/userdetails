@@ -126,6 +126,10 @@
                            value="${props?.secondaryUserType?:''}"
                            data-validation-engine="validate[required]"
                     />--%>
+
+                <label for="sum" id="sumLabel"><g:message code="registration.createAccount.sum"/></label>
+                <input id="sum" name="sum" type="text" class="input-xlarge" value=""/>
+
                 <br/>
                 <g:if test="${edit}">
                     <button id="updateAccountSubmit" class="btn btn-ala"><g:message code="registration.createAccount.update_account" /></button>
@@ -180,12 +184,22 @@
             "Zoologist"
         ];
 
+        var num1 = Math.floor(Math.random() * 10);
+        var num2 = Math.floor(Math.random() * 10);
+        var sum = num1 + num2
+
+        $("#sumLabel").append(" ", num1, " + ", num2);
+
         $(".usageAuto").autocomplete(usageOptions, {});
         $('#updateAccountForm').validationEngine('attach', { scroll: false });
         $("#updateAccountSubmit").click(function(e) {
 
-
             $("#updateAccountSubmit").attr('disabled','disabled');
+
+            var sumCheck = Number($('#sum').val()) === sum
+            if(!sumCheck){
+                alert("${message(code: "registration.createAccount.sum_check_not_correct")}");
+            }
 
             var pm = $('#password').val() == $('#reenteredPassword').val();
             if(!pm){
@@ -194,7 +208,7 @@
 
             var valid = $('#updateAccountForm').validationEngine('validate');
 
-            if (valid && pm) {
+            if (valid && pm && sumCheck) {
                 $("form[name='updateAccountForm']").submit();
             } else {
                 $('#updateAccountSubmit').removeAttr('disabled');
