@@ -41,7 +41,7 @@
     </g:if>
     <g:elseif test="${alreadyRegistered}">
         <div class="row-fluid warning well">
-            <p class="text-error"><g:message code="registration.createAccount.a_user_is_already_registered" args="${params.email}" /></p>
+            <p class="text-error"><g:message code="registration.createAccount.a_user_is_already_registered" args="${[params.email]}"/></p>
 
             <p>
                 <g:message code="registration.createAccount.to_login_with_this_username" args="${[grailsApplication.config.security.cas.loginUrl]}"/><br/>
